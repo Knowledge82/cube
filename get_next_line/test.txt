@@ -1,0 +1,19 @@
+
+Hello, this is the first line.
+
+This is the second line with a newline character at the end.
+
+Here is the third line, but without a newline character
+The fourth line is after an empty line.
+
+This is the fifth line.
+This is the sixth line, also without a newline at the end
+And here is the seventh line.
+
+Eighth line with some content.
+    
+Ninth line with trailing spacesHello, world!This is a test file for get_next_line.It contains multiple lines.Some lines are short.Others are much longer and might even span across multiple buffer reads if your buffer size is small.This one is intentionally empty:This line ends with a newline character.Here's a line that doesn't end with a newline character
+
+
+
+This is the last line of the file, followed by EOF.
