@@ -6,7 +6,7 @@
 #    By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/07/08 15:32:43 by vdarsuye          #+#    #+#              #
-#    Updated: 2025/06/07 17:41:44 by pdoltu           ###   ########.fr        #
+#    Updated: 2025/10/05 16:44:07 by vdarsuye         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,6 +23,7 @@ BLUE = \033[34m
 # compile and flags
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror
+BUFFER_SIZE = 42
 
 SRC = ft_isalnum.c ft_isalpha.c ft_isascii.c ft_isdigit.c ft_isprint.c \
       ft_strdup.c ft_strlen.c ft_tolower.c ft_toupper.c ft_bzero.c \
@@ -32,7 +33,8 @@ SRC = ft_isalnum.c ft_isalpha.c ft_isascii.c ft_isdigit.c ft_isprint.c \
       ft_strtrim.c ft_split.c ft_itoa.c ft_strmapi.c ft_striteri.c \
       ft_putchar_fd.c ft_putstr_fd.c ft_putendl_fd.c ft_putnbr_fd.c \
 	is_numeric_arg.c ft_atol.c ft_atoll.c ft_memset.c ft_strcpy.c \
-	ft_strlcpy.c ft_iswhitespace.c count_strings.c ft_strncpy.c
+	ft_strlcpy.c ft_iswhitespace.c count_strings.c ft_strncpy.c \
+	get_next_line.c get_next_line_utils.c
 
 BONUS_SRC = ft_lstnew_bonus.c ft_lstadd_front_bonus.c ft_lstsize_bonus.c \
 	    ft_lstlast_bonus.c ft_lstadd_back_bonus.c ft_lstdelone_bonus.c \
@@ -48,8 +50,8 @@ $(NAME) : $(OBJ)
 	@ar rcs $(NAME) $(OBJ)
 	@echo "$(GREEN)Library $(NAME) created.$(RESET)"
 
-%.o: %.c Makefile libft.h
-	@$(CC) $(CFLAGS) -c $< -o $@
+%.o: %.c Makefile libft.h get_next_line.h
+	@$(CC) $(CFLAGS) -D BUFFER_SIZE=$(BUFFER_SIZE) -c $< -o $@
 
 clean:
 	@rm -f $(OBJ) $(BONUS_OBJ)

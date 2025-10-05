@@ -6,7 +6,7 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 18:07:26 by vdarsuye          #+#    #+#             */
-/*   Updated: 2025/06/07 16:34:53 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2025/10/05 16:23:01 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <stdbool.h>
+# include "get_next_line.h"
 
 //prototypes
 typedef struct s_list
