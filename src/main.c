@@ -6,13 +6,13 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 12:47:55 by vdarsuye          #+#    #+#             */
-/*   Updated: 2025/10/08 15:04:48 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2025/10/08 16:21:30 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube.h"
 
-void	init_game(char *filename, t_config *config)
+int	init_game(char *filename, t_config *config)
 {
 	char		**file;
 
@@ -36,7 +36,7 @@ void	init_game(char *filename, t_config *config)
 	if (!check_map(file, config))
 	{
 		free_file(file);
-		free_config(config)
+		free_config(&config)
 		error("Invalid map");
 		return 0;
 	}
@@ -47,6 +47,12 @@ void	init_game(char *filename, t_config *config)
 int	main(int argc, char **argv)
 {
 	t_config	config;
+
+	if (argc > 1)
+	{
+		print_error("Too many arguments");
+		return 1;
+	}
 
 	if (!init_game(argv[1], &config))
 	{
