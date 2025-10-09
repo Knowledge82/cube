@@ -6,7 +6,7 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 14:59:39 by vdarsuye          #+#    #+#             */
-/*   Updated: 2025/10/08 16:29:22 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2025/10/09 11:40:59 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	**load_file_data(int fd)
 		if (!temp)
 		{
 			free(line);
-			free_array_str(file);
+			ft_free_array(file);
 			return (NULL);
 		}
 		file = temp;
@@ -36,7 +36,7 @@ char	**load_file_data(int fd)
 	}
 	temp = ft_realloc(file, sizeof(char *) * count, sizeof(char *) * (count + 1));
 	if (!temp)
-		return (free_array_str(file), NULL);
+		return (ft_free_array(file), NULL);
 	file = temp;
 	file[count] = NULL;
 	return (file);

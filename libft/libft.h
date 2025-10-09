@@ -6,7 +6,7 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/08 18:07:26 by vdarsuye          #+#    #+#             */
-/*   Updated: 2025/10/08 15:18:40 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2025/10/09 11:44:44 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int			ft_lstsize(t_list *lst);
 int			count_strings(char **array);
 bool		ft_is_whitespace(char c);
 void		*ft_realloc(void *ptr, size_t old_size, size_t new_size);
-void		free_array_str(char **array);
+void		ft_free_array(char **array);
 void		ft_lstadd_back(t_list **lst, t_list *new);
 void		ft_lstdelone(t_list *lst, void (*del)(void *));
 void		ft_lstclear(t_list **lst, void (*del)(void *));
