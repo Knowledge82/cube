@@ -6,7 +6,7 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 12:47:55 by vdarsuye          #+#    #+#             */
-/*   Updated: 2025/10/08 16:21:30 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2025/10/09 13:51:41 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	main(int argc, char **argv)
 {
 	t_config	config;
 
-	if (argc > 1)
+	if (argc != 2)
 	{
 		print_error("Too many arguments");
 		return 1;

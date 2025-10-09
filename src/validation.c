@@ -6,7 +6,7 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 11:45:08 by vdarsuye          #+#    #+#             */
-/*   Updated: 2025/10/09 13:46:47 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2025/10/09 14:05:05 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ int	find_map_start(char **file)
 	i = 0;
 	while(file[i])
 	{
-		if (file[i] == '\n' || !is_map_line(file[i]))
+		if (strcmp(file[i], '\n') == 0 || !is_map_line(file[i]))
 			i++;
 	}
 	return (i);
