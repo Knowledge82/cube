@@ -17,25 +17,62 @@ char	*get_identifier(char *line)
 		id = ft_strdup("WE");
 	else if (ft_strncmp(&line[i], "EA", 2) == 0 && (ft_iswhitespace(line[i + 2]) || line[i + 2] == '\0'))
 		id = ft_strdup("EA");
-	else if (line[i] == 'F' && (line[i + 1] == ' ' || line[i + 1] == '\0'))
+	else if (line[i] == 'F' && (ft_iswhitespace(line[i + 1]) || line[i + 1] == '\0'))
 		id = ft_strdup("F");
-	else if (line[i] == 'C' && (line[i + 1] == ' ' || line[i + 1] == '\0'))
+	else if (line[i] == 'C' && (ft_iswhitespace(line[i + 1]) || line[i + 1] == '\0'))
 		id = ft_strdup("C");
 	return (id);
 }
 
-int	parse_texture(char *line, t_config *config, char *id)
+char	*extract_path(char *line, char *id)
 {
-	char	*path_texture;
+	char	*path;
+	int		i;
 
-	if (strcmp(id, "NO") == 0)
+	i = 0;
+	while (ft_iswhitespace(line[i]))
+		i++;
+	i = i + ft_strlen(id);
+	while (ft_iswhitespace(line[i]))
+		i++;
+	path = ft_strdup(line + i);
+	if (!path)
+		return (error_msg("Mem alloc failed"), NULL);
+	if (path[0] == '\0')
 	{
-		if (config->north != NULL)
-			return (error_msg("Dublicate value in map config"), 0);
-		path_texture = ft_substr(line, )////////////////////////////////////////////
+		error_msg("Empty path");
+		return (free(path), NULL);
 	}
+	return (path);
 }
 
+int	parse_texture(char *line, t_config *config, char *id)
+{
+	char	**field;
+
+	field = NULL;
+	if (ft_strcmp(id, "NO") == 0)
+		field = &config->north;
+	else if (ft_strcmp(id, "SO") == 0)
+		field = &config->south;
+	else if (ft_strcmp(id, "WE") == 0)
+		field = &config->west;
+	else if (ft_strcmp(id, "EA") == 0)
+		field = &config->east;
+	if (*field != NULL)
+		return (error_msg("Duplicate"), 0);
+	*field = extract_path(line, id);
+	if (!*field)
+		return ("Path error", 0);
+	return (1);
+}
+/*
+if (path_texture[0] == '\0')
+{
+	free(path_texture);
+	return (error_msg("Empty texture path"), 0);
+}
+   */
 
 int	parse_config(char **file, int map_start, t_config *config)
 {
