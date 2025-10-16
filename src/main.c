@@ -12,35 +12,39 @@
 
 #include "cube.h"
 
-int	init_game(char *filename, t_config *config)
+int	init_game(const char *filename, t_config *config)
 {
 	char		**file;
 
 	if (!check_extension(filename))
-	{
-		print_error("Wrong map file extension");
-		return 0;
-	}
+		return (error_msg("Wrong map file extension"), 0);
 	file = read_file(filename);
 	if (!file)
+		return (error_msg("Cannot read map file"), 0);
+	map_start = find_map_start(file);
+	if (map_start == -1)
 	{
-		error("Cannot read map file");
-		return (0);
+		ft_free_array(file);
+		return (error_msg("Map not found"), 0);
 	}
-	if (!check_config(file, config))
+	if (!parse_config(file, map_start, config))
 	{
-		free_file(file);
-		error("Invalid map config");
-		return 0;
+		ft_free_array(file);
+		return (error_msg("Invalid map config"), 0);
 	}
-	if (!check_map(file, config))
+	if (!parse_map(file, config))
 	{
-		free_file(file);
+		ft_free_array(file);
 		free_config(&config)
-		error("Invalid map");
-		return 0;
+		return (error_msg("Invalid map"), 0);
 	}
-	free_file(file);
+	if (!init_mlx(config))
+	{
+		ft_free_array(file);
+		free_config(config);
+		return(0);
+	}
+	ft_free_array(file);
 	return (1);
 }
 
@@ -50,13 +54,13 @@ int	main(int argc, char **argv)
 
 	if (argc != 2)
 	{
-		print_error("Too many arguments");
+		error_msg("Too many arguments");
 		return 1;
 	}
 
 	if (!init_game(argv[1], &config))
 	{
-		error("Game initialization failed");
+		error_msg("Game initialization failed");
 		return 1;
 	}
 

@@ -12,13 +12,7 @@
 
 #include "cube.h"
 
-int	is_valid_char(char c)
-{
-	return (c == '1' || c == '0' || c == 'N' || c == 'S' || c == 'E' || c == 'W' || c == ' ');
-}
-
-
-void	print_error(char *msg)
+void	error_msg(char *msg)
 {
 	ft_putstr_fd("Error\n", STDERR_FILENO);
 	if (msg)

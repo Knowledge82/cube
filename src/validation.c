@@ -12,11 +12,25 @@
 
 #include "cube.h"
 
-int	is_map_symbol(char symbol)
+int	is_map_symbol(char c)
 {
-	if (symbol !='0' && symbol != '1' && symbol !='N' &&
-		symbol != 'S' && symbol !='E' && symbol !='W' && symbol != ' ')
+	if (c !='0' && c != '1' && c !='N' &&
+		c != 'S' && c !='E' && c !='W' && c != ' ')
 		return (0);
+	return (1);
+}
+
+int	is_empty_line(char *line)
+{
+	int	i;
+
+	i = 0;
+	while(line[i])
+	{
+		if (!ft_iswhitespace(line[i]))
+			return (0);
+		i++;
+	}
 	return (1);
 }
 
@@ -45,8 +59,9 @@ int	find_map_start(char **file)
 	i = 0;
 	while(file[i])
 	{
-		if (strcmp(file[i], '\n') == 0 || !is_map_line(file[i]))
-			i++;
+		if (is_map_line(file[i]))
+			return (i);
+		i++;
 	}
-	return (i);
+	return (-1);
 }
