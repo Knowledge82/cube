@@ -32,8 +32,10 @@ typedef struct	s_game
 typedef struct	s_map
 {
 	char	**map;
+	unsigned int	width;
+	unsigned int	heigth;
 }	t_map;
-
+/*
 typedef struct	s_texture
 {
 	mlx_texture_t	*north;
@@ -45,10 +47,15 @@ typedef struct	s_texture
 	mlx_image_t	*img_w;
 	mlx_image_t	*img_e;
 }	t_texture;
-
+*/
 typedef struct	s_config
 {
-	
+	char	*north;
+	char	*south;
+	char	*west;
+	char	*east;
+	int		floor_color;
+	int		ceiling_color;
 }	t_config;
 
 typedef struct	s_player
