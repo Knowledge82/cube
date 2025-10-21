@@ -63,11 +63,11 @@ int	parse_texture(char *line, t_config *config, char *id)
 		return (error_msg("Duplicate"), 0);
 	*field = extract_path(line, id);
 	if (!*field)
-		return ("Path error", 0);
+		return (error_msg("Path error"), 0);
 	return (1);
 }
 
-int	parse_number(char *line, int *i) // need protect from overflow
+int	parse_number(char *line, int *i)
 {
 	int	num;
 	int	digit_count;
@@ -78,6 +78,8 @@ int	parse_number(char *line, int *i) // need protect from overflow
 		(*i)++;
 	while(ft_isdigit(line[*i]))
 	{
+		if (digit_count >= 3)
+			return (-1);
 		num = num * 10 + (line[*i] - '0');
 		(*i)++;
 		digit_count++;
@@ -109,15 +111,15 @@ int	parse_color(char *line, t_config *config, char *id)
 		i++;
 	r = parse_number(line, &i);
 	if (line[i] != ',')
-			return (error_msg("Wrong color data"), 0);
+			return (error_msg("Wrong color format"), 0);
 	i++;
 	g = parse_number(line, &i);
 	if (line[i] != ',')
-			return (error_msg("Wrong color data"), 0);
+			return (error_msg("Wrong color format"), 0);
 	i++;
 	b = parse_number(line, &i);
 	if (!check_color_data_range(r, g ,b))
-			return (error_msg("Wrong color data"), 0);
+			return (error_msg("Wrong color data range"), 0);
 	field = NULL;
 	if (ft_strcmp(id, "F") == 0)
 		field = &config->floor_color;
@@ -147,11 +149,24 @@ int	validate_config(t_config *config)
 	return 1;
 }
 
-//char	*parse_identifier(char *line, t_config *config) - skoree vsego
+int	parse_identifier(char *line, t_config *config)
+{
+	int		result;
+	char	*id;
+
+	id = get_identifier(line);
+	if (!id)
+		return (error_msg("Parse map config failed. Invalid identifier."), 0);
+	if (ft_strcmp(id, "F") == 0 || ft_strcmp(id, "C") == 0)
+		result = parse_color(line, config, id);
+	else
+		result = parse_texture(line, config, id);
+	free(id);
+	return (result);
+}
 
 int	parse_config(char **file, int map_start, t_config *config)
 {
-	char	*id;
 	int		i;
 
 	i = 0;
@@ -162,15 +177,13 @@ int	parse_config(char **file, int map_start, t_config *config)
 			i++;
 			continue;
 		}
-		id = get_identifier(file[i]);
-		if (id == "F" || id == "C")
-			parse_color(file[i], config, id);
-		else
-			parse_texture(file[i], config, id);
-
+		if (!parse_identifier(file[i], config))
+			return (error_msg("Parse map config failed"), 0);
 		i++;
 	}
-	validate_config(config);
+	if (!validate_config(config))
+		return (0);
+	return (1);
 }
 
 
