@@ -12,6 +12,24 @@
 
 #include "cube.h"
 
+void	init_game_structures(t_game *game) // название поменять.
+{
+	ft_memset(game, 0, sizeof(t_game)); // check
+
+	// init config
+	game->config->north = NULL;
+	game->config->south = NULL;
+	game->config->west = NULL;
+	game->config->east = NULL;
+	game->config->floor_color = -1;
+	game->config->ceiling_color = -1;
+
+	// init map
+	game->map->grid = NULL;
+	game->map->width = 0;
+	game->map->heigth = 0;
+}
+
 int	init_game(const char *filename, t_config *config)
 {
 	char		**file;

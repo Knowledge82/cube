@@ -64,12 +64,25 @@ int	file_exist(char *path)
 	return (1);
 }
 
+int	check_texture_file(char *path)
+{
+	if (!file_exist(path))
+	{
+		error_msg("Texture file not found");
+		return (0);
+	}
+	return (1);
+}
+
 int	validate_config(t_config *config)
 {
 	if (!config->north || !config->south || !config->west || !config->east)
 		return (error_msg("Missing texture(s)"), 0);
-	//vse param - ok
-	//file_exists and can be open
-	//color != -1 and 0-255
-	return 1;
+	if (!check_texture_file(config->north) || !check_texture_file(config->south)
+		|| !check_texture_file(config->west) || !check_texture_file(config->east))
+		return (0);
+	if (config->floor_color == -1 || config->ceiling_color == -1)
+		return (error_msg("Missing color(s)"), 0);
+		
+	return (1);
 }

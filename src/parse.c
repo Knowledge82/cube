@@ -38,7 +38,7 @@ int	parse_number(char *line, int *i)
 		(*i)++;
 		digit_count++;
 	}
-	if (digit_count == 0)
+	if (digit_count == 0) // это проверка на отсутствие цифр, типа 100,,220
 		return (-1);
 	return (num);
 }
@@ -72,7 +72,7 @@ int	parse_color(char *line, t_config *config, char *id)
 		field = &config->floor_color;
 	else
 		field = &config->ceiling_color;
-	if (*field == -1)
+	if (*field != -1)
 		return (error_msg("Duplicate color data"), 0);
 	// convert to 0xRRGGBB for MLX
 	color = (r << 16) | (g << 8) | b;
