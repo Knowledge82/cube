@@ -24,20 +24,19 @@
 typedef struct	s_game
 {
 	mlx_t		*mlx;
-	t_map		*map;
-	t_texture	*textures;
-	t_config	*config;
-	t_player	*player;
+	t_map		map;
+	t_texture	textures;
+	t_config	config;
+	t_player	player;
 }	t_game;
 
 typedef struct	s_map
 {
 	char	**grid;
 	int		width;
-	int		heigth;
-	int		player_x; // начальная позиция игрока по Х
-	int		player_y; // начальная позиция игрока по Y
-	char	player_dir; // направление (N/S/W/E)
+	int		height;
+	t_point	player_start;
+	char	start_dir; // направление (N/S/W/E)
 }	t_map;
 
 /*
@@ -92,7 +91,8 @@ typedef struct	s_queue
 // FUNCS
 
 // main.c
-int init_game(const char *filename, t_config *config);
+void    init_game_data(t_game *game);
+int		init_game(const char *filename, t_game *game);
 
 // file.c
 char    **load_file_data(int fd);
@@ -123,6 +123,30 @@ int is_empty_line(char *line);
 int is_map_line(char *line);
 int find_map_start(char **file);
 
+// queue.c
+t_queue *create_queue(int capacity);
+void    enqueue(t_queue *queue, t_point point);
+t_point dequeue(t_queue *queue);
+int is_empty_queue(t_queue *queue);
+void    free_queue(t_queue *queue);
+
+// map.c
+int calculate_map_height(char **file);
+int read_map(char **file, t_map *map);
+int is_player_symbol(char c);
+int find_player(t_map *map);
+void    free_grid(char **grid);
+char    *normalized_line(const char *original, int target_width);
+int normalize_map_width(t_map *map);
+int parse_map(char **file, t_map *map);
+
+// bfs.c
+int **create_visited(t_map *map);
+void    free_visited(int **visited, int height);
+int can_visit(t_point pos, t_map *map, int **visited);
+t_point create_point(int x, int y);
+int check_cell(t_map *map, t_point pos, t_queue *queue, int **visited);
+int check_map_closure(t_map *map);
 
 #endif
 

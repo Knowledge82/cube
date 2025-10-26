@@ -39,7 +39,7 @@ int	read_map(char **file, t_map *map)
 		map->grid[i] = ft_strdup(file[map_line]);
 		if (!map->grid[i])
 		{
-			free_map(map->grid);
+			free_grid(map->grid);
 			map->grid = NULL;
 			return (error_msg("Map memory allocation failed"), 0);
 		}
@@ -78,9 +78,9 @@ int	find_player(t_map *map)
 					return (error_msg("Multiply player position"), 0);
 				else
 				{
-					map->player_x = j;
-					map->player_y = i;
-					map->player_dir = map->grid[i][j];
+					map->player_start.x = j;
+					map->player_start.y = i;
+					map->start_dir = map->grid[i][j];
 					map->grid[i][j] = '0';
 					player_found = 1;
 				}
@@ -159,18 +159,15 @@ int	normalize_map_width(t_map *map)
 	return (1);
 }
 
-
-
-
-
-
-
-
-int	parse_map()
+int	parse_map(char **file, t_map *map)
 {
-	read_map();
-	normalize_map_width();
-	find_player();
-	check_map_closure();
+	if (!read_map(file, map))
+		return (0);
+	if (!normalize_map_width(map))
+		return (free_grid(map->grid), 0);
+	if (!find_player(map))
+		return (free_grid(map->grid), 0);
+	if (!check_map_closure(map))
+		return (0);
 	return (1);
 }

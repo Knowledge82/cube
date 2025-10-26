@@ -1,8 +1,11 @@
 #include "cube.h"
 
+static const int	g_dx[4] = {0, 1, 0, -1};
+static const int	g_dy[4] = {1, 0, -1, 0};
+
 int	**create_visited(t_map *map)
 {
-	int **visited;
+	int	**visited;
 	int	i;
 	int	j;
 
@@ -16,8 +19,11 @@ int	**create_visited(t_map *map)
 		if (!visited[i])
 		{
 			j = 0;
-			while (j < i - 1)
-				free(visited[i]);
+			while (j < i)
+			{
+				free(visited[j]);
+				j++;
+			}
 			free(visited);
 			return (error_msg("BFS failed on create visited"), NULL);
 		}
@@ -39,11 +45,11 @@ void	free_visited(int **visited, int height)
 	free(visited);
 }
 
-int	is_valid_neighbor(int x, int y, t_map *map, int **visited) // на карте, не посещён
+int	can_visit(t_point pos, t_map *map, int **visited) // на карте, не посещён
 {
-	if (x < 0 || x >= map->width || y < 0 || y >= map->height)
+	if (pos.x < 0 || pos.x >= map->width || pos.y < 0 || pos.y >= map->height)
 		return (0);
-	if (visited[y][x])
+	if (visited[pos.y][pos.x])
 		return (0);
 	return (1);
 }
@@ -57,53 +63,53 @@ t_point	create_point(int x, int y)
 	return (point);
 }
 
-int	process_neighbor(t_map *map, int x, int y, t_queue *queue, int **visited)
+int	check_cell(t_map *map, t_point pos, t_queue *queue, int **visited)
 {
 	char	symbol;
 
-	if (!is_valid_neighbor(x, y, map, visited))
+	if (!can_visit(pos, map, visited))
 		return (1);
-	symbol = map->grid[y][x];
+	symbol = map->grid[pos.y][pos.x];
 	if (symbol == ' ')
 		return (0);
 	if (symbol == '1')
 		return (1);
 	if (symbol == '0')
 	{
-		visited[y][x] = 1;
-		enqueue(queue, create_point(x, y));
+		visited[pos.y][pos.x] = 1;
+		enqueue(queue, pos);
 		return (1);
 	}
 	return (1);
 }
 
-int	validate_map_closure(t_map *map, t_point start_position)
+int	check_map_closure(t_map *map)
 {
-	int	**visited;
-	t_queue *queue;
-	t_point current;
-	int directions[4][2]; 
-	int	new_x;
-	int	new_y;
+	int		**visited;
+	int		d;
+	t_queue	*queue;
+	t_point	current;
+	t_point	new_pos;
 
-	directions[4][2] = {{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
 	visited = create_visited(map);
 	if (!visited)
 		return (error_msg("Memory allocation on create visited failed"), 0);
 	queue = create_queue(map->height * map->width);
 	if (!queue)
+	{
+		free_visited(visited, map->height);
 		return (error_msg("Memory allocation on create queue failed"), 0);
-	enqueue (queue, create_point(start_position.x, start_position.y));
-	visited[start_position.y][start_position.x] = 1;
+	}
+	enqueue(queue, map->player_start);
+	visited[map->player_start.y][map->player_start.x] = 1;
 	while (!is_empty_queue(queue))
 	{
 		current = dequeue(queue);
-		int	d = 0;
+		d = 0;
 		while (d < 4)
 		{
-			new_x = current.x + directions[d][0]; // новая координата X
-			new_y = current.y + directions[d][1]; // новая координата y
-			if (!process_neighbor(map, new_x, new_y, queue, visited))
+			new_pos = create_point(current.x + g_dx[d], current.y + g_dy[d]);
+			if (!check_cell(map, new_pos, queue, visited))
 			{
 				free_queue(queue);
 				free_visited(visited, map->height);
@@ -113,6 +119,6 @@ int	validate_map_closure(t_map *map, t_point start_position)
 		}
 	}
 	free_queue(queue);
-	free_visited(visited, map->height)
+	free_visited(visited, map->height);
 	return (1);
 }
