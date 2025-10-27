@@ -28,7 +28,7 @@ int	parse_number(char *line, int *i)
 
 	num = 0;
 	digit_count = 0;
-	while (ft_iswhitespace(line[*i]))
+	while (ft_is_whitespace(line[*i]))
 		(*i)++;
 	while(ft_isdigit(line[*i]))
 	{
@@ -51,10 +51,10 @@ int	parse_color(char *line, t_config *config, char *id)
 	int	r, g, b;
 
 	i = 0;
-	while (ft_iswhitespace(line[i]))
+	while (ft_is_whitespace(line[i]))
 		i++;
 	i = i + ft_strlen(id);
-	while (ft_iswhitespace(line[i]))
+	while (ft_is_whitespace(line[i]))
 		i++;
 	r = parse_number(line, &i);
 	if (line[i] != ',')

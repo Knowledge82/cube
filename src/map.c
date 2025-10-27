@@ -32,7 +32,7 @@ int	read_map(char **file, t_map *map)
 	{
 		if (is_empty_line(file[map_line]))
 		{
-			free_map(map->grid);
+			free_grid(map->grid);
 			error_msg("Empty line in the map");
 			return (0);
 		}
@@ -110,7 +110,7 @@ void	free_grid(char **grid)
 	free(grid);
 }
 
-char	*normalized_line(const char *original, int target_width)
+char	*normalized_line(const char *original, size_t target_width)
 {
 	char	*new_line;
 	size_t	current_len;

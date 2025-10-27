@@ -14,5 +14,5 @@
 
 bool	ft_is_whitespace(char c)
 {
-	return (c == ' ' || c == '\t' || c == '\n');
+	return (c == ' ' || c == '\t');
 }

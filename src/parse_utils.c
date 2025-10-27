@@ -7,19 +7,19 @@ char	*get_identifier(char *line)
 
 	id = NULL;
 	i = 0;
-	while (ft_iswhitespace(line[i]))
+	while (ft_is_whitespace(line[i]))
 		i++;
-	if (ft_strncmp(&line[i], "NO", 2) == 0 && (ft_iswhitespace(line[i + 2]) || line[i + 2] == '\0'))
+	if (ft_strncmp(&line[i], "NO", 2) == 0 && (ft_is_whitespace(line[i + 2]) || line[i + 2] == '\0'))
 		id = ft_strdup("NO");
-	else if (ft_strncmp(&line[i], "SO", 2) == 0 && (ft_iswhitespace(line[i + 2]) || line[i + 2] == '\0'))
+	else if (ft_strncmp(&line[i], "SO", 2) == 0 && (ft_is_whitespace(line[i + 2]) || line[i + 2] == '\0'))
 		id = ft_strdup("SO");
-	else if (ft_strncmp(&line[i], "WE", 2) == 0 && (ft_iswhitespace(line[i + 2]) || line[i + 2] == '\0'))
+	else if (ft_strncmp(&line[i], "WE", 2) == 0 && (ft_is_whitespace(line[i + 2]) || line[i + 2] == '\0'))
 		id = ft_strdup("WE");
-	else if (ft_strncmp(&line[i], "EA", 2) == 0 && (ft_iswhitespace(line[i + 2]) || line[i + 2] == '\0'))
+	else if (ft_strncmp(&line[i], "EA", 2) == 0 && (ft_is_whitespace(line[i + 2]) || line[i + 2] == '\0'))
 		id = ft_strdup("EA");
-	else if (line[i] == 'F' && (ft_iswhitespace(line[i + 1]) || line[i + 1] == '\0'))
+	else if (line[i] == 'F' && (ft_is_whitespace(line[i + 1]) || line[i + 1] == '\0'))
 		id = ft_strdup("F");
-	else if (line[i] == 'C' && (ft_iswhitespace(line[i + 1]) || line[i + 1] == '\0'))
+	else if (line[i] == 'C' && (ft_is_whitespace(line[i + 1]) || line[i + 1] == '\0'))
 		id = ft_strdup("C");
 	return (id);
 }
@@ -30,12 +30,13 @@ char	*extract_path(char *line, char *id)
 	int		i;
 
 	i = 0;
-	while (ft_iswhitespace(line[i]))
+	while (ft_is_whitespace(line[i]))
 		i++;
 	i = i + ft_strlen(id);
-	while (ft_iswhitespace(line[i]))
+	while (ft_is_whitespace(line[i]) && line[i] != '\n')
 		i++;
-	path = ft_strdup(line + i);
+	path = ft_strdup(line + i);/////////////// <=================
+	printf("%s\n", path);
 	if (!path)
 		return (error_msg("Mem alloc failed"), NULL);
 	if (path[0] == '\0')

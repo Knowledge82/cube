@@ -27,7 +27,7 @@ void	init_game_data(t_game *game)
 	// init map
 	game->map.grid = NULL;
 	game->map.width = 0;
-	game->map.heigth = 0;
+	game->map.height = 0;
 	game->map.player_start.x = 0;
 	game->map.player_start.y = 0;
 	game->map.start_dir = '\0';
@@ -42,7 +42,7 @@ int	init_game(const char *filename, t_game *game)
 	init_game_data(game);
 	if (!check_extension(filename))
 		return (error_msg("Wrong map file extension"), 0);
-	printf("check extension - DONE!\n")
+	printf("check extension - DONE!\n");
 	file = read_file(filename);
 	if (!file)
 		return (error_msg("Cannot read map file"), 0);
@@ -63,7 +63,7 @@ int	init_game(const char *filename, t_game *game)
 	if (!parse_map(file, &game->map))
 	{
 		ft_free_array(file);
-		free_config(&game->config);
+		//free_config(&game->config);
 		return (error_msg("Invalid map"), 0);
 	}
 	printf("parse map - DONE!\n");
@@ -72,7 +72,8 @@ int	init_game(const char *filename, t_game *game)
 		ft_free_array(file);
 		free_config(config);
 		return(0);
-*/	}
+	}
+*/
 	ft_free_array(file);
 	return (1);
 }
@@ -90,24 +91,24 @@ void	cleanup(t_game *game)
 	if (game->config.east)
 		free(game->config.east);
 /*	if (game->mlx)
-		mlx_terminate(gamem->mlx);
+		mlx_terminate(game->mlx);
 */
 }
 
 int	main(int argc, char **argv)
 {
-	t_config	config;
+	t_game	game;
 
 	if (argc != 2)
 	{
-		error_msg("Too many arguments");
-		return 1;
+		error_msg("Usage: ./cube3D <map.cub>");
+		return (1);
 	}
 
-	if (!init_game(argv[1], &config))
+	if (!init_game(argv[1], &game))
 	{
 		error_msg("Game initialization failed");
-		return 1;
+		return (1);
 	}
 
 //	run_game(&game);

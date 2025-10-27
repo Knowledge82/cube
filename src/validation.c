@@ -27,7 +27,7 @@ int	is_empty_line(char *line)
 	i = 0;
 	while(line[i])
 	{
-		if (!ft_iswhitespace(line[i]))
+		if (!ft_is_whitespace(line[i]))
 			return (0);
 		i++;
 	}
@@ -38,15 +38,16 @@ int	is_map_line(char *line)
 {
 	int	i;
 
+	printf("DEBUG: entering is_map_line\n");
 	i = 0;
-	while(ft_iswhitespace(line[i]))
+	while(ft_is_whitespace(line[i]))
 		i++;
 	if (line[i] == '\0')
 		return (0);
-	while (line[i])
+	while (line[i] && line[i] != '\n' && line[i] != '\r')
 	{
 		if (!is_map_symbol(line[i]))
-			return (0);
+			return (printf("DEBUG: not a map symbol:%c\n", line[i]), 0);
 		i++;
 	}
 	return (1);

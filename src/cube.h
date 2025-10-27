@@ -14,21 +14,18 @@
 # define CUBE_H
 
 #include "libft.h"
-#include "MLX42.h"
+//#include "MLX42.h"
 #include <unistd.h> //close
 #include <stdio.h> //perror
 #include <errno.h> //errno
 #include <fcntl.h> //open
 #include <math.h>
 
-typedef struct	s_game
+typedef struct	s_point
 {
-	mlx_t		*mlx;
-	t_map		map;
-	t_texture	textures;
-	t_config	config;
-	t_player	player;
-}	t_game;
+	int	x;
+	int	y;
+}	t_point;
 
 typedef struct	s_map
 {
@@ -73,11 +70,14 @@ typedef struct	s_player
 	double	plane_y;
 }	t_player;
 
-typedef struct	s_point
+typedef struct	s_game
 {
-	int	x;
-	int	y;
-}	t_point;
+//	mlx_t		*mlx;
+	t_map		map;
+//	t_texture	textures;
+	t_config	config;
+	t_player	player;
+}	t_game;
 
 typedef struct	s_queue
 {
@@ -96,7 +96,7 @@ int		init_game(const char *filename, t_game *game);
 
 // file.c
 char    **load_file_data(int fd);
-char    **read_file(char *filename);
+char    **read_file(const char *filename);
 
 // parse.c
 int parse_texture(char *line, t_config *config, char *id);
@@ -136,7 +136,7 @@ int read_map(char **file, t_map *map);
 int is_player_symbol(char c);
 int find_player(t_map *map);
 void    free_grid(char **grid);
-char    *normalized_line(const char *original, int target_width);
+char    *normalized_line(const char *original, size_t target_width);
 int normalize_map_width(t_map *map);
 int parse_map(char **file, t_map *map);
 

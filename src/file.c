@@ -12,7 +12,7 @@
 
 #include "cube.h"
 
-static char	**load_file_data(int fd)
+char	**load_file_data(int fd)
 {
 	char	**file;
 	char	**temp;

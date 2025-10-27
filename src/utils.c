@@ -17,7 +17,7 @@ void	error_msg(char *msg)
 	ft_putstr_fd("Error\n", STDERR_FILENO);
 	if (msg)
 		ft_putstr_fd(msg, STDERR_FILENO);
-	ft_putstr_fd('\n', STDERR_FILENO);
+	ft_putstr_fd("\n", STDERR_FILENO);
 }
 
 int     check_extension(const char *filename)
