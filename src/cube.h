@@ -6,7 +6,7 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 14:20:41 by vdarsuye          #+#    #+#             */
-/*   Updated: 2025/10/08 16:46:41 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2025/10/27 17:57:25 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,23 @@
 #include <errno.h> //errno
 #include <fcntl.h> //open
 #include <math.h>
+
+//====================================================================
+// VARIADIC MACRO for debug log
+// ##__VA_ARGS__ это "подставь все оставшиеся аргументы, если они есть" и ## убирает запятую, если аргументов нет
+//чтобы отключить
+
+/*# define debug_log(fmt, ...) ((void)0)*/
+
+//короткий вывод
+# define debug_log(fmt, ...) \
+	dprintf(2, "DEBUG LOG: " fmt "\n", ##__VA_ARGS__)
+
+
+//полный вывод
+/*# define debug_log(fmt, ...) \
+	dprintf(2, "[%s:%d %s]: " fmt "\n", __FILE__, __LINE__, __func__, ##__VA_ARGS__)*/
+//====================================================================
 
 typedef struct	s_point
 {
@@ -90,6 +107,10 @@ typedef struct	s_queue
 
 // FUNCS
 
+// free.c
+void    free_config(t_config *config);
+
+
 // main.c
 void    init_game_data(t_game *game);
 int		init_game(const char *filename, t_game *game);
@@ -109,8 +130,7 @@ int parse_config(char **file, int map_start, t_config *config);
 char    *get_identifier(char *line);
 char    *extract_path(char *line, char *id);
 int check_color_data_range(int r, int g, int b);
-int file_exist(char *path);
-int check_texture_file(char *path);
+bool file_exist(char *path);
 int validate_config(t_config *config);
 
 // utils.c

@@ -28,17 +28,23 @@ char	*extract_path(char *line, char *id)
 {
 	char	*path;
 	int		i;
+	size_t	len;
 
 	i = 0;
 	while (ft_is_whitespace(line[i]))
 		i++;
 	i = i + ft_strlen(id);
-	while (ft_is_whitespace(line[i]) && line[i] != '\n')
+	while (ft_is_whitespace(line[i]))
 		i++;
-	path = ft_strdup(line + i);/////////////// <=================
-	printf("%s\n", path);
+	path = ft_strdup(line + i);
 	if (!path)
 		return (error_msg("Mem alloc failed"), NULL);
+	len = ft_strlen(path);
+	while ((len > 0) && ft_is_whitespace(path[len - 1]))
+	{
+		path[len - 1] = '\0';
+		len--;
+	}
 	if (path[0] == '\0')
 	{
 		error_msg("Empty path");
@@ -54,36 +60,28 @@ int	check_color_data_range(int r, int g, int b)
 	return (1);
 }
 
-int	file_exist(char *path)
+bool	is_file_exist(char *path)
 {
 	int	fd;
 
 	fd = open(path, O_RDONLY);
-	if (fd < 0)
-		return (0);
-	close(fd);
-	return (1);
-}
-
-int	check_texture_file(char *path)
-{
-	if (!file_exist(path))
+	if (fd == -1)
 	{
 		error_msg("Texture file not found");
-		return (0);
+		return (false);
 	}
-	return (1);
+	close(fd);
+	return (true);
 }
 
 int	validate_config(t_config *config)
 {
 	if (!config->north || !config->south || !config->west || !config->east)
 		return (error_msg("Missing texture(s)"), 0);
-	if (!check_texture_file(config->north) || !check_texture_file(config->south)
-		|| !check_texture_file(config->west) || !check_texture_file(config->east))
+	if (!is_file_exist(config->north) || !is_file_exist(config->south)
+		|| !is_file_exist(config->west) || !is_file_exist(config->east))
 		return (0);
 	if (config->floor_color == -1 || config->ceiling_color == -1)
 		return (error_msg("Missing color(s)"), 0);
-		
 	return (1);
 }

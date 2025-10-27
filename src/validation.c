@@ -6,7 +6,7 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/09 11:45:08 by vdarsuye          #+#    #+#             */
-/*   Updated: 2025/10/09 14:05:05 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2025/10/27 12:06:09 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,6 @@ int	is_map_line(char *line)
 {
 	int	i;
 
-	printf("DEBUG: entering is_map_line\n");
 	i = 0;
 	while(ft_is_whitespace(line[i]))
 		i++;
@@ -47,7 +46,7 @@ int	is_map_line(char *line)
 	while (line[i] && line[i] != '\n' && line[i] != '\r')
 	{
 		if (!is_map_symbol(line[i]))
-			return (printf("DEBUG: not a map symbol:%c\n", line[i]), 0);
+			return (0);
 		i++;
 	}
 	return (1);

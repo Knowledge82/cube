@@ -6,7 +6,7 @@
 #    By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/08 16:54:19 by vdarsuye          #+#    #+#              #
-#    Updated: 2025/10/08 17:01:14 by vdarsuye         ###   ########.fr        #
+#    Updated: 2025/10/27 17:58:48 by vdarsuye         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,6 +41,7 @@ SRC = $(SRC_DIR)/main.c \
 	  $(SRC_DIR)/parse_utils.c \
 	  $(SRC_DIR)/bfs.c \
 	  $(SRC_DIR)/validation.c \
+	  $(SRC_DIR)/free.c \
 
 
 

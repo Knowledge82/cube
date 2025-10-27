@@ -6,7 +6,7 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 12:47:55 by vdarsuye          #+#    #+#             */
-/*   Updated: 2025/10/09 13:51:41 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2025/10/27 17:58:18 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,35 +38,37 @@ int	init_game(const char *filename, t_game *game)
 	char	**file;
 	int		map_start;
 
-	printf("INIT GAME\n");
+	debug_log("INIT GAME:");
 	init_game_data(game);
+	debug_log("init game data ✅");
 	if (!check_extension(filename))
 		return (error_msg("Wrong map file extension"), 0);
-	printf("check extension - DONE!\n");
+	debug_log("check extension ✅");
 	file = read_file(filename);
 	if (!file)
 		return (error_msg("Cannot read map file"), 0);
-	printf("read file - DONE!\n");
+	debug_log("read file ✅");
 	map_start = find_map_start(file);
 	if (map_start == -1)
 	{
 		ft_free_array(file);
 		return (error_msg("Map not found"), 0);
 	}
-	printf("find map start - DONE!\n");
+	debug_log("find map start ✅");
 	if (!parse_config(file, map_start, &game->config))
 	{
 		ft_free_array(file);
+		free_config(&game->config);
 		return (error_msg("Invalid map config"), 0);
 	}
-	printf("parse config - DONE!\n");
+	debug_log("parse config ✅");
 	if (!parse_map(file, &game->map))
 	{
 		ft_free_array(file);
-		//free_config(&game->config);
+		free_config(&game->config);
 		return (error_msg("Invalid map"), 0);
 	}
-	printf("parse map - DONE!\n");
+	debug_log("parse map ✅");
 /*	if (!init_mlx(config))
 	{
 		ft_free_array(file);
@@ -82,14 +84,7 @@ void	cleanup(t_game *game)
 {
 	if (game->map.grid)
 		free_grid(game->map.grid);
-	if (game->config.north)
-		free(game->config.north);
-	if (game->config.south)
-		free(game->config.south);
-	if (game->config.west)
-		free(game->config.west);
-	if (game->config.east)
-		free(game->config.east);
+	free_config(&game->config);
 /*	if (game->mlx)
 		mlx_terminate(game->mlx);
 */

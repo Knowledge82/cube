@@ -2,22 +2,21 @@
 
 int	parse_texture(char *line, t_config *config, char *id)
 {
-	char	**field;
+	char	*field;
 
-	field = NULL;
-	if (ft_strcmp(id, "NO") == 0)
-		field = &config->north;
-	else if (ft_strcmp(id, "SO") == 0)
-		field = &config->south;
-	else if (ft_strcmp(id, "WE") == 0)
-		field = &config->west;
-	else if (ft_strcmp(id, "EA") == 0)
-		field = &config->east;
-	if (*field != NULL)
-		return (error_msg("Duplicate"), 0);
-	*field = extract_path(line, id);
-	if (!*field)
+	field = extract_path(line, id);
+	if (!field)
 		return (error_msg("Path error"), 0);
+	if (ft_strcmp(id, "NO") == 0)
+		config->north = field;
+	else if (ft_strcmp(id, "SO") == 0)
+		config->south = field;
+	else if (ft_strcmp(id, "WE") == 0)
+		config->west = field;
+	else if (ft_strcmp(id, "EA") == 0)
+		config->east = field;
+//	if ( != NULL)
+//		return (error_msg("Duplicate"), 0);
 	return (1);
 }
 
@@ -74,7 +73,7 @@ int	parse_color(char *line, t_config *config, char *id)
 		field = &config->ceiling_color;
 	if (*field != -1)
 		return (error_msg("Duplicate color data"), 0);
-	// convert to 0xRRGGBB for MLX
+	// convert  resulto 0xRRGGBB for MLX
 	color = (r << 16) | (g << 8) | b;
 	*field = color;
 	return (1);

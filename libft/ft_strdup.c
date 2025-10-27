@@ -6,7 +6,7 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/04/25 17:15:58 by vdarsuye          #+#    #+#             */
-/*   Updated: 2025/06/07 17:57:36 by pdoltu           ###   ########.fr       */
+/*   Updated: 2025/10/27 13:51:00 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,8 @@ char	*ft_strdup(const char *src)
 	int		len;
 	char	*dest;
 
+	if (!src)
+		return (NULL);
 	len = ft_strlen(src);
 	dest = (char *)malloc(sizeof(char) * (len + 1));
 	if (!dest)
