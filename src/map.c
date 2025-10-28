@@ -14,43 +14,100 @@ int	calculate_map_height(char **file)
 	return (end - start);
 }
 
-int	read_map(char **file, t_map *map)
+int	calculate_map_width(char **file, int map_start)
 {
-	int	map_line;
-	int	line_len;
-	int	max_width;
+	size_t	max_width;
 	int	i;
+	char	*line;
+	size_t	len;
 
-	map->height = calculate_map_height(file);
+	i = map_start;
+	max_width = 0;
+	while (file[i])
+	{
+		line = ft_strtrim(file[i], "\n\r");
+		if (!line)
+			return (error_msg("Memory allocation failed"), -1);
+		len = ft_strlen(line);
+		if (len > max_width)
+			max_width = len;
+		free(line);
+		i++;
+	}
+	return (max_width);
+}
+
+int	allocate_map_grid(t_map *map)
+{
+	if (map->height <= 0)
+		return (error_msg("Invalid map height"), 0);
 	map->grid = ft_calloc(map->height + 1, sizeof(char *));
 	if (!map->grid)
 		return (error_msg("Map memory allocation failed"), 0);
+	return (1);
+}
+
+int	copy_map_line(char **map_grid, int index, const char *src, size_t target_width)
+{
+	char	*clean_line;
+	size_t	clean_len;
+
+	clean_line = ft_strtrim(src, "\n\r");
+	if (!clean_line)
+		return (0);
+	if (ft_strchr(clean_line, '\t'))
+	{
+		free(clean_line);
+		return (error_msg("Tab character in map. Use spaces."), 0);
+	}
+	map_grid[index] = ft_calloc(target_width + 1, sizeof(char));
+	if (!map_grid[index])
+	{
+		free(clean_line);
+		return (error_msg("Map memory allocation failed"), 0);
+	}
+	clean_len = ft_strlen(clean_line);
+	ft_memcpy(map_grid[index], clean_line, clean_len);
+	while (clean_len < target_width)
+	{
+		map_grid[index][clean_len] = ' ';
+		clean_len++;
+	}
+	map_grid[index][target_width] = '\0';
+	free(clean_line);
+	return (1);
+}
+
+int	read_map(char **file, t_map *map)
+{
+	int	map_start;
+	int	map_end;
+	int	map_line;
+	int	i;
+
+	map_start = find_map_start(file);
+	map_line = map_start;
+	map->height = calculate_map_height(file);
+	map->width = calculate_map_width(file, map_start);
+	if (map->width <= 0)
+		return (error_msg("Invalid map width"), 0);
+	map_end = map_start + map->height;
 	i = 0;
-	map_line = find_map_start(file);
-	max_width = 0;
-	while(file[map_line])
+	if (!allocate_map_grid(map))
+		return (0);
+	while(map_line < map_end)
 	{
 		if (is_empty_line(file[map_line]))
 		{
 			free_grid(map->grid);
-			error_msg("Empty line in the map");
-			return (0);
+			return (error_msg("Empty line in the map"), 0);
 		}
-		map->grid[i] = ft_strdup(file[map_line]);
-		if (!map->grid[i])
-		{
-			free_grid(map->grid);
-			map->grid = NULL;
-			return (error_msg("Map memory allocation failed"), 0);
-		}
-		line_len = ft_strlen(map->grid[i]);
-		if (line_len > max_width)
-			max_width = line_len;
-		i++;
+		if (!copy_map_line(map->grid, i, file[map_line], map->width))
+			return (free_grid(map->grid), 0);
 		map_line++;
+		i++;
 	}
 	map->grid[i] = NULL;
-	map->width = max_width;
 	return (1);
 }
 
@@ -110,64 +167,13 @@ void	free_grid(char **grid)
 	free(grid);
 }
 
-char	*normalized_line(const char *original, size_t target_width)
-{
-	char	*new_line;
-	size_t	current_len;
-
-	current_len = ft_strlen(original);
-	if (current_len < target_width)
-	{
-		new_line = malloc(sizeof(char) * (target_width + 1));
-		if (!new_line)
-			return (NULL);
-		ft_memcpy(new_line, original, current_len);
-		while (current_len < target_width)
-			new_line[current_len++] = ' ';
-		new_line[target_width] = '\0';
-	}
-	else
-		new_line = ft_strdup(original);
-	return (new_line);
-}
-
-int	normalize_map_width(t_map *map)
-{
-	int	i;
-	char	**new_grid;
-
-	if (!map || !map->grid || map->height <= 0 || map->width <= 0)
-		return (error_msg("Wrong map data"), 0);
-
-	new_grid = ft_calloc(map->height + 1, sizeof(char*));
-	if (!new_grid)
-		return (error_msg("Mem alloc failed"), 0);
-	i = 0;
-	while (i < map->height)
-	{
-		new_grid[i] = normalized_line(map->grid[i], map->width);
-		if (!new_grid[i])
-		{
-			free_grid(new_grid);
-			return (error_msg("Mem alloc failed"), 0);
-		}
-		i++;
-	}
-	new_grid[i] = NULL;
-	free_grid(map->grid);
-	map->grid = new_grid;
-	return (1);
-}
-
 int	parse_map(char **file, t_map *map)
 {
 	if (!read_map(file, map))
 		return (0);
-	if (!normalize_map_width(map))
-		return (free_grid(map->grid), 0);
 	if (!find_player(map))
 		return (free_grid(map->grid), 0);
 	if (!check_map_closure(map))
-		return (0);
+		return (free_grid(map->grid), 0);
 	return (1);
 }

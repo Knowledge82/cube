@@ -2,21 +2,22 @@
 
 int	parse_texture(char *line, t_config *config, char *id)
 {
-	char	*field;
+	char	**field_ptr; // указатель на нужное поле
 
-	field = extract_path(line, id);
-	if (!field)
-		return (error_msg("Path error"), 0);
+	field_ptr = NULL;
 	if (ft_strcmp(id, "NO") == 0)
-		config->north = field;
+		field_ptr = &config->north;
 	else if (ft_strcmp(id, "SO") == 0)
-		config->south = field;
+		field_ptr = &config->south;
 	else if (ft_strcmp(id, "WE") == 0)
-		config->west = field;
+		field_ptr = &config->west;
 	else if (ft_strcmp(id, "EA") == 0)
-		config->east = field;
-//	if ( != NULL)
-//		return (error_msg("Duplicate"), 0);
+		field_ptr = &config->east;
+	if (*field_ptr != NULL)
+		return (error_msg("Duplicate texture identifier"), 0);
+	*field_ptr = extract_path(line, id);
+	if (!*field_ptr)
+		return (error_msg("Path error"), 0);
 	return (1);
 }
 
@@ -44,7 +45,7 @@ int	parse_number(char *line, int *i)
 
 int	parse_color(char *line, t_config *config, char *id)
 {
-	int *field;
+	int *field_ptr;
 	int	color;
 	int	i;
 	int	r, g, b;
@@ -66,16 +67,16 @@ int	parse_color(char *line, t_config *config, char *id)
 	b = parse_number(line, &i);
 	if (!check_color_data_range(r, g ,b))
 			return (error_msg("Wrong color data range"), 0);
-	field = NULL;
+	field_ptr = NULL;
 	if (ft_strcmp(id, "F") == 0)
-		field = &config->floor_color;
+		field_ptr = &config->floor_color;
 	else
-		field = &config->ceiling_color;
-	if (*field != -1)
+		field_ptr = &config->ceiling_color;
+	if (*field_ptr != -1)
 		return (error_msg("Duplicate color data"), 0);
 	// convert  resulto 0xRRGGBB for MLX
 	color = (r << 16) | (g << 8) | b;
-	*field = color;
+	*field_ptr = color;
 	return (1);
 
 }

@@ -12,6 +12,30 @@
 
 #include "cube.h"
 
+void	print_map(t_map *map)
+{
+	printf("===== MAP GRID ======");
+	printf("Width: %d, Height: %d\n", map->width, map->height);
+	printf("Player start position: %d %d, direction: '%c'\n", map->player_start.x, map->player_start.y, map->start_dir);
+	for (int i = 0; i < map->height; i++)
+	{
+		for (int j = 0; j < map->width; j++)
+		{
+			char c = map->grid[i][j];
+			if (c == ' ')
+				printf("_");
+			else if (c == '\n')
+				printf("\\n");
+			else if (c == '\0')
+				printf("\\0");
+			else
+				printf("%c", c);
+		}
+		printf("\n");
+	}
+	printf("\n ============================ \n");
+}
+
 void	init_game_data(t_game *game)
 {
 	ft_memset(game, 0, sizeof(t_game));
@@ -106,6 +130,7 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 
+	print_map(&game.map);
 //	run_game(&game);
 
 	cleanup(&game);
