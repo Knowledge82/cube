@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "cube.h"
-
+/*
 void	print_map(t_map *map)
 {
 	printf("===== MAP GRID ======");
@@ -35,7 +35,7 @@ void	print_map(t_map *map)
 	}
 	printf("\n ============================ \n");
 }
-
+*/
 void	init_game_data(t_game *game)
 {
 	ft_memset(game, 0, sizeof(t_game));
@@ -114,9 +114,35 @@ void	cleanup(t_game *game)
 */
 }
 
+int	init_engine(t_data *data, int width, int height)
+{
+	data->mlx = mlx_init(width, height, "cube3D", false);
+	if (!data->mlx)
+		return (error_msg("MLX init failed"), 0);
+	data->image = mlx_new_image(data->mlx, width, height);
+	if (!data->image)
+		return (error_msg("Image creation failed"), 0);
+	if (mlx_image_to_window(data->mlx, data->image, 0, 0) < 0)
+		return (error_msg("Image to window failed"), 0);
+	return (1);
+}
+
+void	key_handler(mlx_key_data_t keydata, void *param)
+{
+	t_data	*data;
+
+	data = (t_data*)param;
+	if (keydata.action == MLX_PRESS)
+	{
+		if (keydata.key == MLX_KEY_ESCAPE)
+			mlx_close_window(data->mlx);
+	}
+}
+
 int	main(int argc, char **argv)
 {
 	t_game	game;
+	t_data	data;
 
 	if (argc != 2)
 	{
@@ -129,8 +155,13 @@ int	main(int argc, char **argv)
 		error_msg("Game initialization failed");
 		return (1);
 	}
+	
+	if (!init_engine(&data, WIDTH, HEIGHT))
+		return (cleanup(&game), 1);
+	mlx_key_hook(data.mlx, &key_handler, &data);
+	mlx_loop(data.mlx);
 
-	print_map(&game.map);
+//	print_map(&game.map);
 //	run_game(&game);
 
 	cleanup(&game);

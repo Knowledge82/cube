@@ -12,9 +12,11 @@
 
 # ifndef CUBE_H
 # define CUBE_H
+# define WIDTH 1280
+# define HEIGHT 720
 
 #include "libft.h"
-//#include "MLX42.h"
+#include "MLX42.h"
 #include <unistd.h> //close
 #include <stdio.h> //perror
 #include <errno.h> //errno
@@ -53,7 +55,6 @@ typedef struct	s_map
 	char	start_dir; // направление (N/S/W/E)
 }	t_map;
 
-/*
 typedef struct	s_texture
 {
 	mlx_texture_t	*north;
@@ -65,7 +66,6 @@ typedef struct	s_texture
 	mlx_image_t	*img_w;
 	mlx_image_t	*img_e;
 }	t_texture;
-*/
 
 typedef struct	s_config
 {
@@ -89,9 +89,9 @@ typedef struct	s_player
 
 typedef struct	s_game
 {
-//	mlx_t		*mlx;
+	mlx_t		*mlx;
 	t_map		map;
-//	t_texture	textures;
+	t_texture	textures;
 	t_config	config;
 	t_player	player;
 }	t_game;
@@ -105,8 +105,14 @@ typedef struct	s_queue
 	int	capacity;
 }	t_queue;
 
-// FUNCS
+typedef struct	s_data
+{
+	mlx_t		*mlx; // окно
+	mlx_image_t	*image; // изображение для рендеринга
+	t_game		*game;
+}	t_data;
 
+// FUNCS
 // free.c
 void    free_config(t_config *config);
 

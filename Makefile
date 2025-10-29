@@ -10,28 +10,32 @@
 #                                                                              #
 # **************************************************************************** #
 
+# Vars
 NAME = cub3D
 NAME_BONUS = cub3D_bonus
-
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
-#LDFLAGS = -L$(MLX_DIR)/build -lmlx42 -lglfw -lm -ldl -pthread
 
-INCLUDES = -I$(SRC_DIR) -I$(LIBFT_DIR)
-
-# Directories
+# Dirs
 SRC_DIR = src
 SRC_DIR_BONUS = src/bonus
 OBJ_DIR = obj
 OBJ_DIR_BONUS = obj_bonus
 LIBFT_DIR = ./libft
-#MLX_DIR = ./MLX42
+MLX_DIR = ./MLX42
+MLX_BUILD = $(MLX_DIR)/build
 
 # Libs
 LIBFT = $(LIBFT_DIR)/libft.a
-#MLX_LIB = $(MLX_DIR)/build/libmlx42.a
+MLX_LIB = $(MLX_BUILD)/libmlx42.a
 
-# List of src files
+# Headers
+INCLUDES = -I$(SRC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)/include/MLX42
+
+# Linker flags
+MLX_LDFLAGS = $(MLX_LIB) -lglfw -lm -ldl -pthread
+
+# Src files
 SRC = $(SRC_DIR)/main.c \
 	  $(SRC_DIR)/file.c \
 	  $(SRC_DIR)/utils.c \
@@ -53,16 +57,60 @@ OBJ = $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 # Rules
 all: $(NAME)
 
+# check CMake
+check_cmake:
+	@if ! command -v cmake >/dev/null 2>&1; then \
+		echo "Error: CMake not found!"; \
+		echo "Install it with:"; \
+		echo "	Debian/Ubuntu: sudo apt-get install cmake"; \
+		echo "	Arch: sudo pacman -S cmake"; \
+		echo "	macOS: brew install cmake"; \
+		exit 1; \
+	else \
+		echo "CMake found: $$(cmake --version | head -n1)"; \
+	fi
+
+# check GLFW library
+check_glfw:
+	@if ! pkg-config --exist glfw3 2>/dev/null; then \
+		echo "Error: GLFW3 not found!"; \
+		echo "Install it with:"; \
+		echo "	Debian/Ubuntu: sudo apt-get install libglfw3-dev"; \
+		exit 1; \
+	else \
+		echo "GLFW3 found!"; \
+	fi
+
+# MLX42 clone
+prepare_mlx:
+	@if [ ! -d "$(MLX_DIR)" ]; then \
+		echo "Cloning MLX42..."; \
+		git clone https://github.com/codam-coding-college/MLX42.git $(MLX_DIR); \
+		echo "MLX42 cloned"; \
+	fi
+
+# MLX42 build
+mlx: check_cmake check_glfw prepare_mlx
+	@if [ ! -f "$(MLX_LIB)" ]; then \
+		echo "Building MLX42..."; \
+		cmake $(MLX_DIR) -B $(MLX_BUILD) && make -C $(MLX_BUILD) -j4; \
+		echo "MLX42 built."; \
+	fi
+
+$(MLX_LIB):
+	@make mlx
+
 $(LIBFT):
 	@make -C $(LIBFT_DIR) bonus
 	@echo "Libft DONE!"
 
-$(NAME): $(LIBFT) $(OBJ)
-	@$(CC) $(CFLAGS) $(OBJ) $(LIBFT) -o $(NAME)
+$(NAME): $(LIBFT) $(MLX_LIB) $(OBJ)
+	@$(CC) $(CFLAGS) $(OBJ) $(LIBFT) $(MLX_LDFLAGS) -o $(NAME)
 	@echo "Build DONE!"
 
 #bonus: $(LIBFT) $(BONUS_NAME)
 
+# Compiling the object files
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
 	@mkdir -p $(OBJ_DIR)
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
@@ -72,12 +120,20 @@ clean:
 	@make -C $(LIBFT_DIR) clean
 	@echo "Clean DONE!"
 
-fclean: clean
+clean_mlx:
+	@if [ -d "$(MLX_BUILD)" ]; then \
+		rm -rf $(MLX_BUILD); \
+		echo "MLX42 build directory cleaned."; \
+	else \
+		echo "MLX42 build directory doesn't exist."; \
+	fi
+
+fclean: clean clean_mlx
 	@rm -f $(NAME)
 	@$(MAKE) -C $(LIBFT_DIR) fclean
 	@echo "Fclean DONE!"
 
 re: fclean all
 
-.PHONY: all clean fclean re bonus
+.PHONY: all clean fclean re bonus prepare_mlx mlx clean_mlx
 
