@@ -83,10 +83,12 @@ check_glfw:
 
 # MLX42 clone
 prepare_mlx:
-	@if [ ! -d "$(MLX_DIR)" ]; then \
-		echo "Cloning MLX42..."; \
-		git clone https://github.com/codam-coding-college/MLX42.git $(MLX_DIR); \
-		echo "MLX42 cloned"; \
+	@if [ ! -f "$(MLX_DIR)/CMakeLists.txt" ]; then \
+		echo "Initializing MLX42 submodule..."; \
+		git submodule update --init --recursive; \
+		echo "MLX42 submodule initialized"; \
+	else \
+		echo "MLX42 submodule already initialized"; \
 	fi
 
 # MLX42 build

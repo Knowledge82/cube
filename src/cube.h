@@ -55,17 +55,13 @@ typedef struct	s_map
 	char	start_dir; // направление (N/S/W/E)
 }	t_map;
 
-typedef struct	s_texture
+typedef struct	s_textures
 {
 	mlx_texture_t	*north;
 	mlx_texture_t	*south;
 	mlx_texture_t	*west;
 	mlx_texture_t	*east;
-	mlx_image_t	*img_n;
-	mlx_image_t	*img_s;
-	mlx_image_t	*img_w;
-	mlx_image_t	*img_e;
-}	t_texture;
+}	t_textures;
 
 typedef struct	s_config
 {
@@ -91,7 +87,7 @@ typedef struct	s_game
 {
 	mlx_t		*mlx;
 	t_map		map;
-	t_texture	textures;
+	t_textures	textures;
 	t_config	config;
 	t_player	player;
 }	t_game;
