@@ -36,6 +36,14 @@ void	print_map(t_map *map)
 	printf("\n ============================ \n");
 }
 */
+
+void	print_player(t_game *game)
+{
+	printf("Player pos: (%.2f, %.2f)\n", game->player.pos_x, game->player.pos_y);
+	printf("Player dir: (%.2f, %.2f)\n", game->player.dir_x, game->player.dir_y);
+	printf("Player plane: (%.2f, %.2f)\n", game->player.plane_x, game->player.plane_y);
+}
+
 void	init_game_data(t_game *game)
 {
 	ft_memset(game, 0, sizeof(t_game));
@@ -100,6 +108,10 @@ int	init_game(const char *filename, t_game *game)
 		return(0);
 	}
 */
+	if (!init_player(&game->player, &game->map))
+		return (0);
+	debug_log("init player ✅");
+	print_player(game);
 	ft_free_array(file);
 	return (1);
 }
@@ -114,35 +126,34 @@ void	cleanup(t_game *game)
 */
 }
 
-int	init_engine(t_data *data, int width, int height)
+int	init_engine(t_game *game, int width, int height)
 {
-	data->mlx = mlx_init(width, height, "cube3D", false);
-	if (!data->mlx)
+	game->mlx = mlx_init(width, height, "cube3D", false);
+	if (!game->mlx)
 		return (error_msg("MLX init failed"), 0);
-	data->image = mlx_new_image(data->mlx, width, height);
-	if (!data->image)
+	game->image = mlx_new_image(game->mlx, width, height);
+	if (!game->image)
 		return (error_msg("Image creation failed"), 0);
-	if (mlx_image_to_window(data->mlx, data->image, 0, 0) < 0)
+	if (mlx_image_to_window(game->mlx, game->image, 0, 0) < 0)
 		return (error_msg("Image to window failed"), 0);
 	return (1);
 }
 
 void	key_handler(mlx_key_data_t keydata, void *param)
 {
-	t_data	*data;
+	t_game	*game;
 
-	data = (t_data*)param;
+	game = (t_game*)param;
 	if (keydata.action == MLX_PRESS)
 	{
 		if (keydata.key == MLX_KEY_ESCAPE)
-			mlx_close_window(data->mlx);
+			mlx_close_window(game->mlx);
 	}
 }
 
 int	main(int argc, char **argv)
 {
 	t_game	game;
-	t_data	data;
 
 	if (argc != 2)
 	{
@@ -156,10 +167,10 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 	
-	if (!init_engine(&data, WIDTH, HEIGHT))
+	if (!init_engine(&game, WIDTH, HEIGHT))
 		return (cleanup(&game), 1);
-	mlx_key_hook(data.mlx, &key_handler, &data);
-	mlx_loop(data.mlx);
+	mlx_key_hook(game.mlx, &key_handler, &game);
+	mlx_loop(game.mlx);
 
 //	print_map(&game.map);
 //	run_game(&game);

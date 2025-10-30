@@ -102,21 +102,21 @@ typedef struct	s_queue
 	int	capacity;
 }	t_queue;
 
-typedef struct	s_data
-{
-	mlx_t		*mlx; // окно
-	mlx_image_t	*image; // изображение для рендеринга
-	t_game		*game;
-}	t_data;
-
 // FUNCS
 // free.c
 void    free_config(t_config *config);
+
+// player.c
+int init_player(t_player *player, t_map *map);
 
 
 // main.c
 void    init_game_data(t_game *game);
 int		init_game(const char *filename, t_game *game);
+void    cleanup(t_game *game);
+int		init_engine(t_game *game, int width, int height);
+void    key_handler(mlx_key_data_t keydata, void *param);
+
 
 // file.c
 char    **load_file_data(int fd);
