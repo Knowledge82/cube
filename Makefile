@@ -6,7 +6,7 @@
 #    By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/08 16:54:19 by vdarsuye          #+#    #+#              #
-#    Updated: 2025/10/27 17:58:48 by vdarsuye         ###   ########.fr        #
+#    Updated: 2025/10/30 11:18:02 by vdarsuye         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -71,15 +71,15 @@ check_cmake:
 	fi
 
 # check GLFW library
-check_glfw:
-	@if ! pkg-config --exist glfw3 2>/dev/null; then \
-		echo "Error: GLFW3 not found!"; \
-		echo "Install it with:"; \
-		echo "	Debian/Ubuntu: sudo apt-get install libglfw3-dev"; \
-		exit 1; \
-	else \
-		echo "GLFW3 found!"; \
-	fi
+#check_glfw:
+#	@if ! pkg-config --exist glfw3 2>/dev/null; then \
+#		echo "Error: GLFW3 not found!"; \
+#		echo "Install it with:"; \
+#		echo "	Debian/Ubuntu: sudo apt-get install libglfw3-dev"; \
+#		exit 1; \
+#	else \
+#		echo "GLFW3 found!"; \
+#	fi
 
 # MLX42 clone
 prepare_mlx:
@@ -92,7 +92,7 @@ prepare_mlx:
 	fi
 
 # MLX42 build
-mlx: check_cmake check_glfw prepare_mlx
+mlx: check_cmake prepare_mlx
 	@if [ ! -f "$(MLX_LIB)" ]; then \
 		echo "Building MLX42..."; \
 		cmake $(MLX_DIR) -B $(MLX_BUILD) && make -C $(MLX_BUILD) -j4; \

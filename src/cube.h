@@ -6,7 +6,7 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 14:20:41 by vdarsuye          #+#    #+#             */
-/*   Updated: 2025/10/27 17:57:25 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2025/10/30 17:54:10 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,9 +86,10 @@ typedef struct	s_player
 typedef struct	s_game
 {
 	mlx_t		*mlx;
+	mlx_image_t	*image;
+	t_config	config;
 	t_map		map;
 	t_textures	textures;
-	t_config	config;
 	t_player	player;
 }	t_game;
 

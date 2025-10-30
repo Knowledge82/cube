@@ -1,10 +1,25 @@
 NO ./textures/wall.png
-F 220,10,0
-SO ./textures/wall2.png
-WE ./textures/wall3.png
-EA ./textures/wall4.png
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SO ./textures/wall2.png
 C 225,30,0
+WE ./textures/wall3.png
+EA      ./textures/wall4.png
+
+F 220,10,0
 	
         1111111111111111111111111
         1000000000110000000000001
