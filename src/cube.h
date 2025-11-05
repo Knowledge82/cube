@@ -21,7 +21,7 @@
 #include <stdio.h> //perror
 #include <errno.h> //errno
 #include <fcntl.h> //open
-#include <math.h>
+#include <math.h> // fabs, INFINITY
 
 //====================================================================
 // VARIADIC MACRO for debug log
@@ -39,6 +39,32 @@
 /*# define debug_log(fmt, ...) \
 	dprintf(2, "[%s:%d %s]: " fmt "\n", __FILE__, __LINE__, __func__, ##__VA_ARGS__)*/
 //====================================================================
+
+typedef struct	s_ray
+{
+	// направление луча
+	double	dir_x;
+	double	dir_y;
+
+	// текущая клетка карты
+	int		map_x;
+	int		map_y;
+
+	// расстояния для DDA
+	// deltaDist - расстояние луча для прохода через 1 клетку. Это гипотенуза треугольника с катетом 1.0
+	double	delta_dist_x;//расстояние луча, чтобы сдвинуться на 1.0 по Х
+	double	delta_dist_y;//расстояние луча, чтобы сдвинуться на 1.0 по Y
+	double	side_dist_x;// расстояние до след вертикальной границы
+	double	side_dist_y;// расстояние до след горизонтальной границы
+
+	// шаги по сетке
+	int		step_x;// направление шага по X: +1 - вправо, -1 - влево
+	int		step_y;// направление шага по Y: +1 - вних, -1 - вверх
+
+	// результат DDA
+	int		side; // какая граница пересечена: 0 - вертикальная, 1 - горизонтальная
+	double	perp_wall_dist; // перпеникулярное расстояние до стены
+}	t_ray;
 
 typedef struct	s_point
 {
@@ -75,12 +101,12 @@ typedef struct	s_config
 
 typedef struct	s_player
 {// dir и plane - векторы для алгоритма ray casting
-	double	pos_x; // текущая Х позиция 
+	double	pos_x; // текущая Х позиция на карте (в клетках). стартовая позиция для луча
 	double	pos_y; // текущая Y позиция 
-	double	dir_x; // направление взгляда
+	double	dir_x; // вектор направления взгляда
 	double	dir_y;
-	double	plane_x; // плоскость камеры Х (перпендикулярна dir)
-	double	plane_y;
+	double	plane_x; // вектор плоскости камеры Х (|- dir, ~0.66). Поле зрения FOV.
+	double	plane_y; // для вычисления направления каждого луча.
 }	t_player;
 
 typedef struct	s_game
@@ -103,6 +129,9 @@ typedef struct	s_queue
 }	t_queue;
 
 // FUNCS
+// ray.c
+void	render_frame(t_game *game);
+
 // free.c
 void    free_config(t_config *config);
 
@@ -116,7 +145,7 @@ int		init_game(const char *filename, t_game *game);
 void    cleanup(t_game *game);
 int		init_engine(t_game *game, int width, int height);
 void    key_handler(mlx_key_data_t keydata, void *param);
-
+void    game_loop(void *param);
 
 // file.c
 char    **load_file_data(int fd);
@@ -155,12 +184,13 @@ void    free_queue(t_queue *queue);
 
 // map.c
 int calculate_map_height(char **file);
+int calculate_map_width(char **file, int map_start);
+int allocate_map_grid(t_map *map);
+int copy_map_line(char **map_grid, int index, const char *src, size_t target_width);
 int read_map(char **file, t_map *map);
 int is_player_symbol(char c);
 int find_player(t_map *map);
 void    free_grid(char **grid);
-char    *normalized_line(const char *original, size_t target_width);
-int normalize_map_width(t_map *map);
 int parse_map(char **file, t_map *map);
 
 // bfs.c

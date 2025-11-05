@@ -86,7 +86,7 @@ int	parse_color(char *line, t_config *config, char *id)
 		field_ptr = &config->ceiling_color;
 	if (*field_ptr != -1)
 		return (error_msg("Duplicate color data"), 0);
-	// convert  resulto 0xRRGGBB for MLX
+	// convert  result to 0xRRGGBB for MLX
 	color = (r << 16) | (g << 8) | b;
 	*field_ptr = color;
 	return (1);

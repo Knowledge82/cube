@@ -72,7 +72,7 @@ int	check_color_data_range(int r, int g, int b)
 	return (1);
 }
 
-bool	is_file_exist(char *path)
+bool	file_exist(char *path)
 {
 	int	fd;
 
@@ -90,8 +90,8 @@ int	validate_config(t_config *config)
 {
 	if (!config->north || !config->south || !config->west || !config->east)
 		return (error_msg("Missing texture(s)"), 0);
-	if (!is_file_exist(config->north) || !is_file_exist(config->south)
-		|| !is_file_exist(config->west) || !is_file_exist(config->east))
+	if (!file_exist(config->north) || !file_exist(config->south)
+		|| !file_exist(config->west) || !file_exist(config->east))
 		return (0);
 	if (config->floor_color == -1 || config->ceiling_color == -1)
 		return (error_msg("Missing color(s)"), 0);

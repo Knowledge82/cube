@@ -48,6 +48,7 @@ SRC = $(SRC_DIR)/main.c \
 	  $(SRC_DIR)/free.c \
 	  $(SRC_DIR)/draw.c \
 	  $(SRC_DIR)/player.c \
+	  $(SRC_DIR)/ray.c \
 
 
 

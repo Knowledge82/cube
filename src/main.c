@@ -151,6 +151,15 @@ void	key_handler(mlx_key_data_t keydata, void *param)
 	}
 }
 
+void	game_loop(void *param)
+{
+	t_game	*game;
+
+	game = (t_game*)param;
+// ========== БЛОК 1: Обработка событий (пока пропускаем) ==========
+	render_frame(game);
+}
+
 int	main(int argc, char **argv)
 {
 	t_game	game;
@@ -169,11 +178,11 @@ int	main(int argc, char **argv)
 	
 	if (!init_engine(&game, WIDTH, HEIGHT))
 		return (cleanup(&game), 1);
+	mlx_loop_hook(game.mlx, &game_loop, &game);
 	mlx_key_hook(game.mlx, &key_handler, &game);
 	mlx_loop(game.mlx);
 
 //	print_map(&game.map);
-//	run_game(&game);
 
 	cleanup(&game);
 
