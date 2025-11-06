@@ -6,7 +6,7 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 14:20:41 by vdarsuye          #+#    #+#             */
-/*   Updated: 2025/10/30 17:54:10 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2025/11/06 16:13:23 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,8 +95,8 @@ typedef struct	s_config
 	char	*south;
 	char	*west;
 	char	*east;
-	int		floor_color;  // 0xRRGGBB
-	int		ceiling_color; // 0xRRGGBB
+	uint32_t	floor_color;  // 0xRRGGBBAA
+	uint32_t	ceiling_color; // 0xRRGGBBAA
 }	t_config;
 
 typedef struct	s_player
@@ -117,6 +117,8 @@ typedef struct	s_game
 	t_map		map;
 	t_textures	textures;
 	t_player	player;
+	double		move_speed;
+	double		rotation_speed;
 }	t_game;
 
 typedef struct	s_queue
@@ -129,6 +131,12 @@ typedef struct	s_queue
 }	t_queue;
 
 // FUNCS
+// movement.c
+int     can_move_to(t_game *game, double x, double y);
+void    handle_movement_w_s(t_game *game);
+void    handle_movement_a_d(t_game *game);
+void    handle_input(t_game *game);
+
 // ray.c
 void	render_frame(t_game *game);
 

@@ -6,7 +6,7 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 11:48:08 by vdarsuye          #+#    #+#             */
-/*   Updated: 2025/10/30 15:29:47 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2025/11/06 17:53:18 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,4 +50,45 @@ int	load_all_textures(t_textures *textures, t_config *config)
 	return (1);
 }
 
-//mlx_texture_to_image   >mlx_image_t* mlx_texture_to_image(mlx_t* mlx, mlx_texture_t* texture)
+mlx_texture_t	*select_texture(t_game *game, t_ray *ray)
+{
+	if (ray->side == 0) // вертикальная стена (X-стена)
+	{
+		if (ray->dir_x > 0)
+			return (game->textures.west);// луч вправо = смотрим на западную сторону
+		else
+			return (game->textures.east);// луч влево = смотрим на восточную
+	}
+	else // горизнтальная граница (Y-стена)
+	{
+		if (ray->dir_y > 0)
+			return (game->textures.north);// луч вниз = смотрим на северную сторону
+		else
+			return (game->textures.south);// луч влево = смотрим на южную
+		
+	}
+}
+
+// Вычисление координаты Х на текстуре (где именно на стене попали)
+int	calculate_tex_x(t_game *game, t_ray *ray, mlx_texture_t *texture)
+{
+	double	wall_x;
+	int	tex_x;
+
+	// координата точки пересечения на стене
+	if (ray->side == 0) // если вертикальная стена
+		wall_x = game->player.pos_y + ray->perp_wall_dist * ray->dir_y;
+	else // горизонтальная
+		wall_x = game->player.pos_x + ray->perp_wall_dist * ray->dir_x;
+
+	// берём только дробную часть (от 0.0 до 1.0)
+	wall_x = wall_x - floor(wall_x);
+
+	// масштабируем на ширину текстуры
+	tex_x = (int)(wall_x * (double)texture->width);
+
+	// защита от выхода за границы (на случай ошибок округления)
+	if (tex_x >= (int)texture->width)
+		tex_x = texture->width - 1;
+	return (tex_x);
+}

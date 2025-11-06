@@ -6,7 +6,7 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 11:48:51 by vdarsuye          #+#    #+#             */
-/*   Updated: 2025/10/30 11:48:53 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2025/11/06 13:55:54 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,8 +57,8 @@ int	parse_number(char *line, int *i)
 
 int	parse_color(char *line, t_config *config, char *id)
 {
-	int *field_ptr;
-	int	color;
+	uint32_t	*field_ptr;
+	uint32_t	color;
 	int	i;
 	int	r, g, b;
 
@@ -84,13 +84,12 @@ int	parse_color(char *line, t_config *config, char *id)
 		field_ptr = &config->floor_color;
 	else
 		field_ptr = &config->ceiling_color;
-	if (*field_ptr != -1)
+	if (*field_ptr != 0xFFFFFFFF)
 		return (error_msg("Duplicate color data"), 0);
 	// convert  result to 0xRRGGBB for MLX
 	color = (r << 16) | (g << 8) | b;
 	*field_ptr = color;
 	return (1);
-
 }
 
 int	parse_identifier(char *line, t_config *config)

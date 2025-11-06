@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ray.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/06 12:30:58 by vdarsuye          #+#    #+#             */
+/*   Updated: 2025/11/06 13:57:49 by vdarsuye         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cube.h"
 
 void	init_ray(t_game *game, int x, t_ray *ray)
@@ -89,32 +101,66 @@ void	dda(t_game *game, t_ray *ray)// шагаем по сетке пока не 
 	//- ray->side хранит тип пересечённой границы
 	//- ray->map_x, ray->map_y — координаты клетки со стеной
 }
-/*
+
 void	calculate_wall_distance(t_game *game, t_ray *ray)
 {
 	if (ray->side == 0)  // Вертикальная стена
-		ray->perp_wall_dist = (ray->map_x - player.pos_x + (1 - ray->step_x) / 2.0) / ray->dir_x;
-    else  // Горизонтальная стена
-		ray->perp_wall_dist = (ray->map_y - player.pos_y + (1 - ray->step_y) / 2.0) / ray->dir_y;
+		ray->perp_wall_dist = (ray->map_x - game->player.pos_x + (1 - ray->step_x) / 2.0) / ray->dir_x;
+	else  // Горизонтальная стена
+		ray->perp_wall_dist = (ray->map_y - game->player.pos_y + (1 - ray->step_y) / 2.0) / ray->dir_y;
 }
 
 void	draw_column(t_game *game, int x, t_ray *ray)
 {
-		line_height = (int)(screen_height / ray->perp_wall_dist);
-		draw_start = -1 * line_height / 2 + screen_height / 2;
-		draw_end = line_height / 2 + screen_height / 2;
+	int	screen_height;
+	int	line_height;
+	int	draw_start;
+	int	draw_end;
+	int	y;
+	uint32_t	wall_color; // временный цвет
+	uint32_t	ceiling_color;
+	uint32_t	floor_color;
     
-    3. Нарисовать потолок (от 0 до draw_start - 1):
-       Залить цветом config.ceiling_color
-    
-    4. Нарисовать стену (от draw_start до draw_end):
-       - Пока без текстур — просто цветом (например, красный или синий в зависимости от side)
-       - Позже добавим текстурирование
-    
-    5. Нарисовать пол (от draw_end + 1 до screen_height - 1):
-       Залить цветом config.floor_color
+	screen_height = game->image->height;
+	line_height = (int)(screen_height / ray->perp_wall_dist);
+	draw_start = -1 * line_height / 2 + screen_height / 2;
+	if (draw_start < 0)
+		draw_start = 0; // обрезаем по верхней границе экрана
+	draw_end = line_height / 2 + screen_height / 2;
+	if (draw_end >= screen_height)
+		draw_end = screen_height - 1; // обрезаем по нижней границе экрана
+   	
+	if (ray->side == 0)
+		wall_color = 0xFF0000FF; // red
+	else
+		wall_color = 0x0000FFFF; // blue
+	ceiling_color = (game->config.ceiling_color << 8) | 0xFF;
+	floor_color = (game->config.floor_color << 8) | 0xFF;
+	// рисуем потолок
+	y = 0;
+	while (y < draw_start)
+	{
+		mlx_put_pixel(game->image, x, y, ceiling_color);
+		y++;
+	}
+
+	// стену
+	y = draw_start;
+	while (y <= draw_end)
+	{
+		mlx_put_pixel(game->image, x, y, wall_color);
+		y++;
+	}
+
+	// пол
+	y = draw_end + 1;
+	while (y < screen_height)
+	{
+		mlx_put_pixel(game->image, x, y, floor_color);
+		y++;
+	}
 }
-*/
+
 void	render_frame(t_game *game)// отрисовываем 1 кадр
 {
 	int	screen_height;
@@ -134,8 +180,10 @@ void	render_frame(t_game *game)// отрисовываем 1 кадр
 		dda(game, &ray);
 		if (x < 3)
 			debug_log("	After DDA: map=(%d, %d), side=%d", ray.map_x, ray.map_y, ray.side);
-//		calculate_wall_distance(game, &ray);
-//		draw_column(game, x, &ray);
+		calculate_wall_distance(game, &ray);
+		if (x < 3)
+			debug_log("	After calculate_wall_distance: perp_wall_dist=(%.2f)", ray.perp_wall_dist);
+		draw_column(game, x, &ray);
 		x++;
 	}
 	// ОТЛАДОЧНЫЙ ВЫВОД (только для центрального столбца)

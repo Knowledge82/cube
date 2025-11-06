@@ -6,7 +6,7 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 12:47:55 by vdarsuye          #+#    #+#             */
-/*   Updated: 2025/10/27 17:58:18 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2025/11/06 16:13:51 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,16 @@ void	init_game_data(t_game *game)
 {
 	ft_memset(game, 0, sizeof(t_game));
 
+	game->move_speed = 0.05;
+	game->rotation_speed = 0.02;
+
 	// init config
 	game->config.north = NULL;
 	game->config.south = NULL;
 	game->config.west = NULL;
 	game->config.east = NULL;
-	game->config.floor_color = -1;
-	game->config.ceiling_color = -1;
+	game->config.floor_color = 0xFFFFFFFF;
+	game->config.ceiling_color = 0xFFFFFFFF;
 
 	// init map
 	game->map.grid = NULL;
@@ -156,7 +159,7 @@ void	game_loop(void *param)
 	t_game	*game;
 
 	game = (t_game*)param;
-// ========== БЛОК 1: Обработка событий (пока пропускаем) ==========
+	handle_input(game);
 	render_frame(game);
 }
 

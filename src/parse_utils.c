@@ -6,7 +6,7 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 11:49:01 by vdarsuye          #+#    #+#             */
-/*   Updated: 2025/10/30 11:49:03 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2025/11/06 13:56:49 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int	validate_config(t_config *config)
 	if (!file_exist(config->north) || !file_exist(config->south)
 		|| !file_exist(config->west) || !file_exist(config->east))
 		return (0);
-	if (config->floor_color == -1 || config->ceiling_color == -1)
+	if (config->floor_color == 0xFFFFFFFF || config->ceiling_color == 0xFFFFFFFF)
 		return (error_msg("Missing color(s)"), 0);
 	return (1);
 }
