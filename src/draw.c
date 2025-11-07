@@ -5,90 +5,113 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/10/30 11:48:08 by vdarsuye          #+#    #+#             */
-/*   Updated: 2025/11/06 17:53:18 by vdarsuye         ###   ########.fr       */
+/*   Created: 2025/11/07 11:13:06 by vdarsuye          #+#    #+#             */
+/*   Updated: 2025/11/07 12:48:12 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube.h"
 
-void	free_textures(t_textures *textures)
+void	init_draw_wall(t_game *game, t_ray *ray, t_wall_draw *wall)
 {
-	if (textures->north != NULL)
-		mlx_delete_texture(textures->north);
-	if (textures->south != NULL)
-		mlx_delete_texture(textures->south);
-	if (textures->west != NULL)
-		mlx_delete_texture(textures->west);
-	if (textures->east != NULL)
-		mlx_delete_texture(textures->east);
+	wall->line_height = (int)(game->image->height / ray->perp_wall_dist);
+	wall->draw_start = -1 * wall->line_height / 2 + game->image->height / 2;
+	if (wall->draw_start < 0)
+		wall->draw_start = 0; // обрезаем по верхней границе экрана
+	wall->draw_end = wall->line_height / 2 + game->image->height / 2;
+	if (wall->draw_end >= (int)game->image->height)
+		wall->draw_end = (int)game->image->height - 1; // обрезаем по нижней границе экрана
+	wall->current_texture = select_texture(game, ray);
+	wall->tex_x = calculate_tex_x(game, ray, wall->current_texture);
 }
 
-int	load_texture(mlx_texture_t **texture_field, const char *path)
+void	draw_ceiling(t_game *game, int x, int draw_start)// рисуем потолок
 {
-	mlx_texture_t	*tmp;
+	int		y;
+	uint32_t	ceiling_color;
 
-	tmp = mlx_load_png(path);
-	if (!tmp)
-		return (error_msg("Failed to load texture"), 0);
-	*texture_field = tmp;
-	return (1);
-}
-
-int	load_all_textures(t_textures *textures, t_config *config)
-{
-	textures->north = NULL;
-	textures->south = NULL;
-	textures->west = NULL;
-	textures->east = NULL;
-
-	if (!load_texture(&textures->north, config->north)
-		|| !load_texture(&textures->south, config->south)
-	       	|| !load_texture(&textures->west, config->west)
-	       	|| !load_texture(&textures->east, config->east))
-		return (free_textures(textures), 0);
-	return (1);
-}
-
-mlx_texture_t	*select_texture(t_game *game, t_ray *ray)
-{
-	if (ray->side == 0) // вертикальная стена (X-стена)
+	ceiling_color = (game->config.ceiling_color << 8) | 0xFF;
+	y = 0;
+	while (y < (int)draw_start)
 	{
-		if (ray->dir_x > 0)
-			return (game->textures.west);// луч вправо = смотрим на западную сторону
-		else
-			return (game->textures.east);// луч влево = смотрим на восточную
-	}
-	else // горизнтальная граница (Y-стена)
-	{
-		if (ray->dir_y > 0)
-			return (game->textures.north);// луч вниз = смотрим на северную сторону
-		else
-			return (game->textures.south);// луч влево = смотрим на южную
-		
+		mlx_put_pixel(game->image, x, y, ceiling_color);
+		y++;
 	}
 }
 
-// Вычисление координаты Х на текстуре (где именно на стене попали)
-int	calculate_tex_x(t_game *game, t_ray *ray, mlx_texture_t *texture)
+void	draw_floor(t_game *game, int x, int draw_end)// рисуем пол
 {
-	double	wall_x;
-	int	tex_x;
+	int		y;
+	uint32_t	floor_color;
 
-	// координата точки пересечения на стене
-	if (ray->side == 0) // если вертикальная стена
-		wall_x = game->player.pos_y + ray->perp_wall_dist * ray->dir_y;
-	else // горизонтальная
-		wall_x = game->player.pos_x + ray->perp_wall_dist * ray->dir_x;
+	floor_color = (game->config.floor_color << 8) | 0xFF;
+	y = draw_end + 1;
+	while (y < (int)game->image->height)
+	{
+		mlx_put_pixel(game->image, x, y, floor_color);
+		y++;
+	}
+}
 
-	// берём только дробную часть (от 0.0 до 1.0)
-	wall_x = wall_x - floor(wall_x);
+/* 
+ Как сопоставить пиксели экрана и текстуры? Через масштабирование (пропорциональное сопоставление)
+ Математика масштабирования: 
+ Для пикселя экрана y (от draw_start до draw_end):
+    1. Вычислить "позицию" на стене (от 0.0 до 1.0):
+       position_on_wall = (y - draw_start) / line_height
+       Где:
+       - (y - draw_start) — смещение от верха стены (в пикселях экрана)
+       - line_height — общая высота стены на экране (в пикселях)
+    2. Масштабировать эту позицию на высоту текстуры:
+       tex_y = position_on_wall * texture_height
+       
+       НО! Если вычислять position_on_wall заново для каждого пикселя через деление, это медленно (деление — дорогая операция).
+Решение: Вычислить шаг (step) — на сколько сдвигаться по текстуре за один пиксель экрана.
+*/ 
+void	draw_wall(t_game *game, int x, t_wall_draw *wall)// рисуем один вертикальный столбец текстурированной стены от draw_start до draw_end
+{
+	int	y; //текущий пиксель экрана (по вертикали)
+	double	step;
+	double	tex_pos;//текущая позиция на текстуре
+	int	tex_y;//текущая строка текстуры (0..127)
+	uint32_t	color;//цвет пикселя текстуры
 
-	// масштабируем на ширину текстуры
-	tex_x = (int)(wall_x * (double)texture->width);
+	//вычисляем шаг
+	step = (double)wall->current_texture->height / (double)wall->line_height;
+	
+	tex_pos = 0.0;//начальная позиция на текстуре. верх стены = верх текстуры
+	
+	//цикл по всем пикселям стены на экране (от верха до низа)
+	y = wall->draw_start;
+	while (y <= wall->draw_end)
+	{
+		tex_y = (int)tex_pos;
 
-	// защита от выхода за границы (на случай ошибок округления)
-	if (tex_x >= (int)texture->width)
-		tex_x = texture->width - 1;
-	return (tex_x);
+		// защита от выхода за границы текстуры
+		// на случай ошибок округления или если tex_pos >= texture_height
+		if (tex_y >= (int)wall->current_texture->height)
+			tex_y = wall->current_texture->height - 1;
+
+		// получаем цвет пикселя текстуры по координатам (tex_x, tex_y)
+		color = get_texture_color(wall->current_texture, wall->tex_x, tex_y);
+
+		// рисуем пиксель на экране в позиции (x, y)
+		mlx_put_pixel(game->image, x, y, color);
+
+		//сдвигаемся на след строку текстуры
+		tex_pos = tex_pos + step;
+
+		// переходим к след пикселю экрана (вниз на 1 пиксель)
+		y++;
+	}
+}
+
+void	draw_column(t_game *game, int x, t_ray *ray)
+{
+	t_wall_draw	wall;
+
+	init_draw_wall(game, ray, &wall);
+	draw_ceiling(game, x, wall.draw_start);
+	draw_wall(game, x, &wall);
+	draw_floor(game, x, wall.draw_end);
 }

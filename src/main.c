@@ -6,7 +6,7 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 12:47:55 by vdarsuye          #+#    #+#             */
-/*   Updated: 2025/11/06 16:13:51 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2025/11/07 12:55:21 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,6 @@ void	print_map(t_map *map)
 	}
 	printf("\n ============================ \n");
 }
-*/
 
 void	print_player(t_game *game)
 {
@@ -43,6 +42,7 @@ void	print_player(t_game *game)
 	printf("Player dir: (%.2f, %.2f)\n", game->player.dir_x, game->player.dir_y);
 	printf("Player plane: (%.2f, %.2f)\n", game->player.plane_x, game->player.plane_y);
 }
+*/
 
 void	init_game_data(t_game *game)
 {
@@ -50,16 +50,12 @@ void	init_game_data(t_game *game)
 
 	game->move_speed = 0.05;
 	game->rotation_speed = 0.02;
-
-	// init config
 	game->config.north = NULL;
 	game->config.south = NULL;
 	game->config.west = NULL;
 	game->config.east = NULL;
 	game->config.floor_color = 0xFFFFFFFF;
 	game->config.ceiling_color = 0xFFFFFFFF;
-
-	// init map
 	game->map.grid = NULL;
 	game->map.width = 0;
 	game->map.height = 0;
@@ -104,17 +100,10 @@ int	init_game(const char *filename, t_game *game)
 		return (error_msg("Invalid map"), 0);
 	}
 	debug_log("parse map ✅");
-/*	if (!init_mlx(config))
-	{
-		ft_free_array(file);
-		free_config(config);
-		return(0);
-	}
-*/
 	if (!init_player(&game->player, &game->map))
 		return (0);
 	debug_log("init player ✅");
-	print_player(game);
+//	print_player(game);
 	ft_free_array(file);
 	return (1);
 }
@@ -124,9 +113,8 @@ void	cleanup(t_game *game)
 	if (game->map.grid)
 		free_grid(game->map.grid);
 	free_config(&game->config);
-/*	if (game->mlx)
+	if (game->mlx)
 		mlx_terminate(game->mlx);
-*/
 }
 
 int	init_engine(t_game *game, int width, int height)
@@ -180,6 +168,8 @@ int	main(int argc, char **argv)
 	}
 	
 	if (!init_engine(&game, WIDTH, HEIGHT))
+		return (cleanup(&game), 1);
+	if (!load_all_textures(&game.textures, &game.config))
 		return (cleanup(&game), 1);
 	mlx_loop_hook(game.mlx, &game_loop, &game);
 	mlx_key_hook(game.mlx, &key_handler, &game);

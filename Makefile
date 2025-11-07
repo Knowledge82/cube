@@ -6,7 +6,7 @@
 #    By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/08 16:54:19 by vdarsuye          #+#    #+#              #
-#    Updated: 2025/11/06 15:23:11 by vdarsuye         ###   ########.fr        #
+#    Updated: 2025/11/07 11:19:48 by vdarsuye         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,9 +47,11 @@ SRC = $(SRC_DIR)/main.c \
 	  $(SRC_DIR)/validation.c \
 	  $(SRC_DIR)/free.c \
 	  $(SRC_DIR)/draw.c \
+	  $(SRC_DIR)/draw_utils.c \
 	  $(SRC_DIR)/player.c \
 	  $(SRC_DIR)/ray.c \
 	  $(SRC_DIR)/movement.c \
+	  $(SRC_DIR)/textures.c \
 
 
 

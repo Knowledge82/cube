@@ -6,14 +6,14 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 14:20:41 by vdarsuye          #+#    #+#             */
-/*   Updated: 2025/11/06 16:13:23 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2025/11/07 12:36:34 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # ifndef CUBE_H
 # define CUBE_H
-# define WIDTH 1280
-# define HEIGHT 720
+# define WIDTH 1920
+# define HEIGHT 1080
 
 #include "libft.h"
 #include "MLX42.h"
@@ -89,6 +89,15 @@ typedef struct	s_textures
 	mlx_texture_t	*east;
 }	t_textures;
 
+typedef struct	s_wall_draw// это структура для хранения параметров отрисовки
+{
+	int	line_height;//высота стены на экране
+	int	draw_start;//начало отрисовки стены(Y)
+	int	draw_end;//конец отрисовки (Y)
+	mlx_texture_t	*current_texture;// текущая текстура
+	int	tex_x;//Х-координата на текстуре
+}	t_wall_draw;
+
 typedef struct	s_config
 {
 	char	*north;
@@ -138,7 +147,27 @@ void    handle_movement_a_d(t_game *game);
 void    handle_input(t_game *game);
 
 // ray.c
+void    init_ray(t_game *game, int x, t_ray *ray);
+void    dda(t_game *game, t_ray *ray);
+void    calculate_wall_distance(t_game *game, t_ray *ray);
 void	render_frame(t_game *game);
+
+// draw.c
+void    init_draw_wall(t_game *game, t_ray *ray, t_wall_draw *wall);
+void    draw_ceiling(t_game *game, int x, int draw_start);
+void    draw_floor(t_game *game, int x, int draw_end);
+void    draw_wall(t_game *game, int x, t_wall_draw *wall);
+void    draw_column(t_game *game, int x, t_ray *ray);
+
+// draw_utils.c
+mlx_texture_t	*select_texture(t_game *game, t_ray *ray);
+int		calculate_tex_x(t_game *game, t_ray *ray, mlx_texture_t *texture);
+uint32_t	get_texture_color(mlx_texture_t *texture, int tex_x, int tex_y);
+
+// textures.c
+void	free_textures(t_textures *textures);
+int	load_texture(mlx_texture_t **texture_field, const char *path);
+int	load_all_textures(t_textures *textures, t_config *config);
 
 // free.c
 void    free_config(t_config *config);
