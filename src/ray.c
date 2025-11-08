@@ -75,7 +75,7 @@ void	dda(t_game *game, t_ray *ray)// шагаем по сетке пока не 
 		if (ray->side_dist_x < ray->side_dist_y)
 		{
 			// ближе вертикальная граница -> шагаем по X
-			ray->side_dist_x += ray->delta_dist_x;//обновляем расстояние дос след верт границы
+			ray->side_dist_x += ray->delta_dist_x;//обновляем расстояние до след верт границы
 			ray->map_x += ray->step_x;// двигаемся на 1 клетку по Х
 			ray->side = 0;//запоминаем, что пересекли вертикальную границу
 		}

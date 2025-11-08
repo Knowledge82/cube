@@ -15,13 +15,25 @@
 void	free_textures(t_textures *textures)
 {
 	if (textures->north != NULL)
+	{
 		mlx_delete_texture(textures->north);
+		textures->north = NULL;
+	}
 	if (textures->south != NULL)
+	{
 		mlx_delete_texture(textures->south);
+		textures->south = NULL;
+	}
 	if (textures->west != NULL)
+	{
 		mlx_delete_texture(textures->west);
+		textures->west = NULL;
+	}
 	if (textures->east != NULL)
+	{
 		mlx_delete_texture(textures->east);
+		textures->east = NULL;
+	}
 }
 
 int	load_texture(mlx_texture_t **texture_field, const char *path)

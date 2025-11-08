@@ -12,8 +12,8 @@
 
 # ifndef CUBE_H
 # define CUBE_H
-# define WIDTH 1920
-# define HEIGHT 1080
+# define WIDTH 800
+# define HEIGHT 600
 
 #include "libft.h"
 #include "MLX42.h"
@@ -42,26 +42,16 @@
 
 typedef struct	s_ray
 {
-	// направление луча
 	double	dir_x;
 	double	dir_y;
-
-	// текущая клетка карты
 	int		map_x;
 	int		map_y;
-
-	// расстояния для DDA
-	// deltaDist - расстояние луча для прохода через 1 клетку. Это гипотенуза треугольника с катетом 1.0
 	double	delta_dist_x;//расстояние луча, чтобы сдвинуться на 1.0 по Х
 	double	delta_dist_y;//расстояние луча, чтобы сдвинуться на 1.0 по Y
 	double	side_dist_x;// расстояние до след вертикальной границы
 	double	side_dist_y;// расстояние до след горизонтальной границы
-
-	// шаги по сетке
 	int		step_x;// направление шага по X: +1 - вправо, -1 - влево
 	int		step_y;// направление шага по Y: +1 - вних, -1 - вверх
-
-	// результат DDA
 	int		side; // какая граница пересечена: 0 - вертикальная, 1 - горизонтальная
 	double	perp_wall_dist; // перпеникулярное расстояние до стены
 }	t_ray;
@@ -96,6 +86,7 @@ typedef struct	s_wall_draw// это структура для хранения �
 	int	draw_end;//конец отрисовки (Y)
 	mlx_texture_t	*current_texture;// текущая текстура
 	int	tex_x;//Х-координата на текстуре
+	int	clipped_top;
 }	t_wall_draw;
 
 typedef struct	s_config

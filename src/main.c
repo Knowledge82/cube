@@ -110,6 +110,7 @@ int	init_game(const char *filename, t_game *game)
 
 void	cleanup(t_game *game)
 {
+	free_textures(&game->textures);
 	if (game->map.grid)
 		free_grid(game->map.grid);
 	free_config(&game->config);
