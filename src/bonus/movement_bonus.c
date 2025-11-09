@@ -1,16 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   movement.c                                         :+:      :+:    :+:   */
+/*   movement_bonus.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/11/06 14:55:40 by vdarsuye          #+#    #+#             */
-/*   Updated: 2025/11/09 18:27:42 by vdarsuye         ###   ########.fr       */
+/*   Created: 2025/11/09 15:32:03 by vdarsuye          #+#    #+#             */
+/*   Updated: 2025/11/09 15:32:10 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube.h"
+
+// проверяем, можно ли двигаться в позицию (x, y)
+int	can_move_to(t_game *game, double x, double y)
+{
+	int	map_x;
+	int	map_y;
+
+	map_x = (int)x;
+	map_y = (int)y;
+	if (map_x < 0 || map_x >= game->map.width
+		|| map_y < 0 || map_y >= game->map.height)
+		return (0);
+	if (game->map.grid[map_y][map_x] == '1')
+		return (0);
+	return (1);
+}
 
 void	handle_movement_w_s(t_game *game)
 {
@@ -23,16 +39,20 @@ void	handle_movement_w_s(t_game *game)
 		new_y = game->player.pos_y + game->player.dir_y * game->move_speed;
 		// раздельные проверки по X и Y для скольжения вдоль стен
 		// проверка коллизии по X
-		game->player.pos_x = new_x;
+		if (can_move_to(game, new_x, game->player.pos_y))
+			game->player.pos_x = new_x;
 		// проверка коллизии по Y
-		game->player.pos_y = new_y;
+		if (can_move_to(game, game->player.pos_x, new_y))
+			game->player.pos_y = new_y;
 	}
 	if (mlx_is_key_down(game->mlx, MLX_KEY_S))
 	{
 		new_x = game->player.pos_x - game->player.dir_x * game->move_speed;
 		new_y = game->player.pos_y - game->player.dir_y * game->move_speed;
-		game->player.pos_x = new_x;
-		game->player.pos_y = new_y;
+		if (can_move_to(game, new_x, game->player.pos_y))
+			game->player.pos_x = new_x;
+		if (can_move_to(game, game->player.pos_x, new_y))
+			game->player.pos_y = new_y;
 	}
 }
 
@@ -45,15 +65,19 @@ void	handle_movement_a_d(t_game *game)
 	{
 		new_x = game->player.pos_x - game->player.plane_x * game->move_speed;
 		new_y = game->player.pos_y - game->player.plane_y * game->move_speed;
-		game->player.pos_x = new_x;
-		game->player.pos_y = new_y;
+		if (can_move_to(game, new_x, game->player.pos_y))
+			game->player.pos_x = new_x;
+		if (can_move_to(game, game->player.pos_x, new_y))
+			game->player.pos_y = new_y;
 	}
 	if (mlx_is_key_down(game->mlx, MLX_KEY_D))
 	{
 		new_x = game->player.pos_x + game->player.plane_x * game->move_speed;
 		new_y = game->player.pos_y + game->player.plane_y * game->move_speed;
-		game->player.pos_x = new_x;
-		game->player.pos_y = new_y;
+		if (can_move_to(game, new_x, game->player.pos_y))
+			game->player.pos_x = new_x;
+		if (can_move_to(game, game->player.pos_x, new_y))
+			game->player.pos_y = new_y;
 	}	
 }
 

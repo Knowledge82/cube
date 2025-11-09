@@ -6,7 +6,7 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 14:55:40 by vdarsuye          #+#    #+#             */
-/*   Updated: 2025/11/09 18:27:42 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2025/11/09 15:39:23 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void	handle_movement_w_s(t_game *game)
 		new_x = game->player.pos_x + game->player.dir_x * game->move_speed;
 		new_y = game->player.pos_y + game->player.dir_y * game->move_speed;
 		// раздельные проверки по X и Y для скольжения вдоль стен
-		// проверка коллизии по X
 		game->player.pos_x = new_x;
 		// проверка коллизии по Y
 		game->player.pos_y = new_y;

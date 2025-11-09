@@ -6,14 +6,14 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 14:20:41 by vdarsuye          #+#    #+#             */
-/*   Updated: 2025/11/07 12:36:34 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2025/11/09 18:29:49 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # ifndef CUBE_H
 # define CUBE_H
-# define WIDTH 800
-# define HEIGHT 600
+# define WIDTH 1920
+# define HEIGHT 1080
 
 #include "libft.h"
 #include "MLX42.h"

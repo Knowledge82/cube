@@ -6,9 +6,18 @@
 #    By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/08 16:54:19 by vdarsuye          #+#    #+#              #
-#    Updated: 2025/11/07 11:19:48 by vdarsuye         ###   ########.fr        #
+#    Updated: 2025/11/09 18:26:03 by vdarsuye         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
+# Colors
+RESET = \033[0m
+RED = \033[31m
+GREEN = \033[32m
+NEON_GREEN = \033[92m
+MATRIX_GREEN = \033[38;2;10;255;10m
+YELLOW = \033[33m
+BLUE = \033[34m
 
 # Vars
 NAME = cub3D
@@ -17,10 +26,10 @@ CC = gcc
 CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
 
 # Dirs
-SRC_DIR = src
-SRC_DIR_BONUS = src/bonus
-OBJ_DIR = obj
-OBJ_DIR_BONUS = obj_bonus
+SRCS_DIR = src
+SRCS_DIR_BONUS = src/bonus
+OBJS_DIR = obj
+OBJS_DIR_BONUS = obj/bonus
 LIBFT_DIR = ./libft
 MLX_DIR = ./MLX42
 MLX_BUILD = $(MLX_DIR)/build
@@ -30,35 +39,50 @@ LIBFT = $(LIBFT_DIR)/libft.a
 MLX_LIB = $(MLX_BUILD)/libmlx42.a
 
 # Headers
-INCLUDES = -I$(SRC_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)/include/MLX42
+INCLUDES = -I$(SRCS_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)/include/MLX42
 
 # Linker flags
 MLX_LDFLAGS = $(MLX_LIB) -lglfw -lm -ldl -pthread
 
 # Src files
-SRC = $(SRC_DIR)/main.c \
-	  $(SRC_DIR)/file.c \
-	  $(SRC_DIR)/utils.c \
-	  $(SRC_DIR)/map.c \
-	  $(SRC_DIR)/queue.c \
-	  $(SRC_DIR)/parse.c \
-	  $(SRC_DIR)/parse_utils.c \
-	  $(SRC_DIR)/bfs.c \
-	  $(SRC_DIR)/validation.c \
-	  $(SRC_DIR)/free.c \
-	  $(SRC_DIR)/draw.c \
-	  $(SRC_DIR)/draw_utils.c \
-	  $(SRC_DIR)/player.c \
-	  $(SRC_DIR)/ray.c \
-	  $(SRC_DIR)/movement.c \
-	  $(SRC_DIR)/textures.c \
+SRCS = $(SRCS_DIR)/main.c \
+	$(SRCS_DIR)/file.c \
+	$(SRCS_DIR)/utils.c \
+	$(SRCS_DIR)/map.c \
+	$(SRCS_DIR)/queue.c \
+	$(SRCS_DIR)/parse.c \
+	$(SRCS_DIR)/parse_utils.c \
+	$(SRCS_DIR)/bfs.c \
+	$(SRCS_DIR)/validation.c \
+	$(SRCS_DIR)/free.c \
+	$(SRCS_DIR)/draw.c \
+	$(SRCS_DIR)/draw_utils.c \
+	$(SRCS_DIR)/player.c \
+	$(SRCS_DIR)/ray.c \
+	$(SRCS_DIR)/movement.c \
+	$(SRCS_DIR)/textures.c \
 
 
 
-#BONUS_SRC = $(SRC_DIR_BONUS)/ .c \
+SRCS_BONUS = $(SRCS_DIR_BONUS)/main.c \
+	$(SRCS_DIR_BONUS)/file.c \
+	$(SRCS_DIR_BONUS)/utils.c \
+	$(SRCS_DIR_BONUS)/map.c \
+	$(SRCS_DIR_BONUS)/queue.c \
+	$(SRCS_DIR_BONUS)/parse.c \
+	$(SRCS_DIR_BONUS)/parse_utils.c \
+	$(SRCS_DIR_BONUS)/bfs.c \
+	$(SRCS_DIR_BONUS)/validation.c \
+	$(SRCS_DIR_BONUS)/free.c \
+	$(SRCS_DIR_BONUS)/draw.c \
+	$(SRCS_DIR_BONUS)/draw_utils.c \
+	$(SRCS_DIR_BONUS)/player.c \
+	$(SRCS_DIR_BONUS)/ray.c \
+	$(SRCS_DIR_BONUS)/movement_bonus.c \
+	$(SRCS_DIR_BONUS)/textures.c \
 
-OBJ = $(SRC:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
-#BONUS_OBJS = 
+OBJS = $(SRCS:$(SRCS_DIR)/%.c=$(OBJS_DIR)/%.o)
+BONUS_OBJS = $(SRCS_BONUS:$(SRCS_DIR_BONUS)/%.c=$(OBJS_DIR_BONUS)/%.o)
 
 # Rules
 all: $(NAME)
@@ -76,17 +100,6 @@ check_cmake:
 		echo "CMake found: $$(cmake --version | head -n1)"; \
 	fi
 
-# check GLFW library
-#check_glfw:
-#	@if ! pkg-config --exist glfw3 2>/dev/null; then \
-#		echo "Error: GLFW3 not found!"; \
-#		echo "Install it with:"; \
-#		echo "	Debian/Ubuntu: sudo apt-get install libglfw3-dev"; \
-#		exit 1; \
-#	else \
-#		echo "GLFW3 found!"; \
-#	fi
-
 # MLX42 clone
 prepare_mlx:
 	@if [ ! -f "$(MLX_DIR)/CMakeLists.txt" ]; then \
@@ -102,7 +115,7 @@ mlx: check_cmake prepare_mlx
 	@if [ ! -f "$(MLX_LIB)" ]; then \
 		echo "Building MLX42..."; \
 		cmake $(MLX_DIR) -B $(MLX_BUILD) && make -C $(MLX_BUILD) -j4; \
-		echo "MLX42 built."; \
+		echo "$(GREEN)MLX42 built.$(RESET)"; \
 	fi
 
 $(MLX_LIB):
@@ -110,36 +123,44 @@ $(MLX_LIB):
 
 $(LIBFT):
 	@make -C $(LIBFT_DIR) bonus
-	@echo "Libft DONE!"
+	@echo "$(GREEN)Libft DONE!$(RESET)"
 
-$(NAME): $(LIBFT) $(MLX_LIB) $(OBJ)
-	@$(CC) $(CFLAGS) $(OBJ) $(LIBFT) $(MLX_LDFLAGS) -o $(NAME)
-	@echo "Build DONE!"
+$(NAME): $(LIBFT) $(MLX_LIB) $(OBJS)
+	@$(CC) $(CFLAGS) $(OBJS) $(LIBFT) $(MLX_LDFLAGS) -o $(NAME)
+	@echo "$(NEON_GREEN)Build DONE!$(RESET)"
 
-#bonus: $(LIBFT) $(BONUS_NAME)
+bonus: $(NAME_BONUS)
+
+$(NAME_BONUS): $(LIBFT) $(MLX_LIB) $(BONUS_OBJS)
+	@$(CC) $(CFLAGS) $(BONUS_OBJS) $(LIBFT) $(MLX_LDFLAGS) -o $(NAME_BONUS)
+	@echo "$(NEON_GREEN)Bonus build DONE!$(RESET)"
 
 # Compiling the object files
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
-	@mkdir -p $(OBJ_DIR)
+$(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c
+	@mkdir -p $(OBJS_DIR)
+	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+
+$(OBJS_DIR_BONUS)/%.o: $(SRCS_DIR_BONUS)/%.c
+	@mkdir -p $(OBJS_DIR_BONUS)
 	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 clean:
-	@rm -rf $(OBJ_DIR)
+	@rm -rf $(OBJS_DIR) $(OBJS_DIR_BONUS)
 	@make -C $(LIBFT_DIR) clean
-	@echo "Clean DONE!"
+	@echo "$(BLUE)Clean DONE!$(RESET)"
 
 clean_mlx:
 	@if [ -d "$(MLX_BUILD)" ]; then \
 		rm -rf $(MLX_BUILD); \
-		echo "MLX42 build directory cleaned."; \
+		echo "$(BLUE)MLX42 build directory cleaned.$(RESET)"; \
 	else \
 		echo "MLX42 build directory doesn't exist."; \
 	fi
 
 fclean: clean clean_mlx
-	@rm -f $(NAME)
+	@rm -f $(NAME) $(NAME_BONUS)
 	@$(MAKE) -C $(LIBFT_DIR) fclean
-	@echo "Fclean DONE!"
+	@echo "$(BLUE)Fclean DONE!$(RESET)"
 
 re: fclean all
 
