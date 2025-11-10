@@ -6,58 +6,11 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 12:31:38 by vdarsuye          #+#    #+#             */
-/*   Updated: 2025/11/06 12:31:39 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2025/11/10 18:30:01 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube.h"
-
-int	calculate_map_height(char **file)
-{
-	int	start;
-	int	end;
-
-	start = find_map_start(file);
-	if (start == -1)
-		return (error_msg("Map parse failed"), -1);
-	end = start;
-	while (file[end])
-		end++;
-	return (end - start);
-}
-
-int	calculate_map_width(char **file, int map_start)
-{
-	size_t	max_width;
-	int	i;
-	char	*line;
-	size_t	len;
-
-	i = map_start;
-	max_width = 0;
-	while (file[i])
-	{
-		line = ft_strtrim(file[i], "\n\r");
-		if (!line)
-			return (error_msg("Memory allocation failed"), -1);
-		len = ft_strlen(line);
-		if (len > max_width)
-			max_width = len;
-		free(line);
-		i++;
-	}
-	return (max_width);
-}
-
-int	allocate_map_grid(t_map *map)
-{
-	if (map->height <= 0)
-		return (error_msg("Invalid map height"), 0);
-	map->grid = ft_calloc(map->height + 1, sizeof(char *));
-	if (!map->grid)
-		return (error_msg("Map memory allocation failed"), 0);
-	return (1);
-}
 
 int	copy_map_line(char **map_grid, int index, const char *src, size_t target_width)
 {
@@ -68,16 +21,10 @@ int	copy_map_line(char **map_grid, int index, const char *src, size_t target_wid
 	if (!clean_line)
 		return (0);
 	if (ft_strchr(clean_line, '\t'))
-	{
-		free(clean_line);
-		return (error_msg("Tab character in map. Use spaces."), 0);
-	}
+		return (error_msg("Tab character in map. Use spaces."), free(clean_line), 0);
 	map_grid[index] = ft_calloc(target_width + 1, sizeof(char));
 	if (!map_grid[index])
-	{
-		free(clean_line);
-		return (error_msg("Map memory allocation failed"), 0);
-	}
+		return (error_msg("Map memory allocation failed"), free(clean_line), 0);
 	clean_len = ft_strlen(clean_line);
 	ft_memcpy(map_grid[index], clean_line, clean_len);
 	while (clean_len < target_width)
@@ -123,11 +70,6 @@ int	read_map(char **file, t_map *map)
 	return (1);
 }
 
-int	is_player_symbol(char c)
-{
-	return (c == 'N' || c == 'S' || c == 'W' || c == 'E');
-}
-
 int	find_player(t_map *map)
 {
 	int	i;
@@ -163,21 +105,6 @@ int	find_player(t_map *map)
 	return (1);
 }
 
-
-void	free_grid(char **grid)
-{
-	int	i;
-
-	if (!grid)
-		return ;
-	i = 0;
-	while (grid[i])
-	{
-		free(grid[i]);
-		i++;
-	}
-	free(grid);
-}
 
 int	parse_map(char **file, t_map *map)
 {

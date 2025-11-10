@@ -6,7 +6,7 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 14:55:40 by vdarsuye          #+#    #+#             */
-/*   Updated: 2025/11/09 18:27:42 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2025/11/10 14:13:33 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,7 @@ void	handle_movement_w_s(t_game *game)
 	{
 		new_x = game->player.pos_x + game->player.dir_x * game->move_speed;
 		new_y = game->player.pos_y + game->player.dir_y * game->move_speed;
-		// раздельные проверки по X и Y для скольжения вдоль стен
-		// проверка коллизии по X
 		game->player.pos_x = new_x;
-		// проверка коллизии по Y
 		game->player.pos_y = new_y;
 	}
 	if (mlx_is_key_down(game->mlx, MLX_KEY_S))
@@ -99,4 +96,27 @@ void	handle_input(t_game *game)
 	handle_movement_w_s(game);
 	handle_movement_a_d(game);
 	handle_rotation(game);
+}
+
+void	clamp_player_position(t_game *game)//ограничение позиции игрока в пределах карты для предотвращения выхода игрока за границы. clamp = прижимать
+{
+	double	min_x;
+	double	max_x;
+	double	min_y;
+	double	max_y;
+
+	min_x = 0.5;
+	max_x = (double)game->map.width - 0.5;
+	min_y = 0.5;
+	max_y = (double)game->map.height - 0.5;
+
+	if (game->player.pos_x < min_x)
+		game->player.pos_x = min_x;
+	if (game->player.pos_x > max_x)
+		game->player.pos_x = max_x;
+	if (game->player.pos_y < min_y)
+		game->player.pos_y = min_y;
+	if (game->player.pos_y > max_y)
+		game->player.pos_y = max_y;
+		
 }

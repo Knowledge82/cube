@@ -1,10 +1,11 @@
-
 SO ./textures/wall2.png
-
-
 NO ./textures/wall.png
 WE ./textures/wall3.png
-EA      ./textures/wall4.png
+EA ./textures/wall4.png
+
+
+
+
 
 C 135,206,235
 F 50,50,50

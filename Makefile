@@ -6,7 +6,7 @@
 #    By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/08 16:54:19 by vdarsuye          #+#    #+#              #
-#    Updated: 2025/11/09 18:26:03 by vdarsuye         ###   ########.fr        #
+#    Updated: 2025/11/10 18:27:01 by vdarsuye         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -47,8 +47,10 @@ MLX_LDFLAGS = $(MLX_LIB) -lglfw -lm -ldl -pthread
 # Src files
 SRCS = $(SRCS_DIR)/main.c \
 	$(SRCS_DIR)/file.c \
+	$(SRCS_DIR)/init.c \
 	$(SRCS_DIR)/utils.c \
 	$(SRCS_DIR)/map.c \
+	$(SRCS_DIR)/map_utils.c \
 	$(SRCS_DIR)/queue.c \
 	$(SRCS_DIR)/parse.c \
 	$(SRCS_DIR)/parse_utils.c \
@@ -66,8 +68,10 @@ SRCS = $(SRCS_DIR)/main.c \
 
 SRCS_BONUS = $(SRCS_DIR_BONUS)/main.c \
 	$(SRCS_DIR_BONUS)/file.c \
+	$(SRCS_DIR_BONUS)/init.c \
 	$(SRCS_DIR_BONUS)/utils.c \
 	$(SRCS_DIR_BONUS)/map.c \
+	$(SRCS_DIR_BONUS)/map_utils.c \
 	$(SRCS_DIR_BONUS)/queue.c \
 	$(SRCS_DIR_BONUS)/parse.c \
 	$(SRCS_DIR_BONUS)/parse_utils.c \

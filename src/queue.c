@@ -6,15 +6,15 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/30 11:49:11 by vdarsuye          #+#    #+#             */
-/*   Updated: 2025/10/30 11:49:12 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2025/11/10 15:02:22 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube.h"
 
-t_queue *create_queue(int capacity)
+t_queue	*create_queue(int capacity)
 {
-	t_queue *queue;
+	t_queue	*queue;
 
 	queue = malloc(sizeof(t_queue));
 	if (!queue)
@@ -44,6 +44,7 @@ void	enqueue(t_queue *queue, t_point point)
 t_point	dequeue(t_queue *queue)
 {
 	t_point	point;
+
 	point = queue->data[queue->first];
 	queue->first = (queue->first + 1) % queue->capacity;
 	queue->current_size--;
@@ -55,10 +56,11 @@ int	is_empty_queue(t_queue *queue)
 	return (queue->current_size == 0);
 }
 
-void	free_queue(t_queue *queue)
+t_point	create_point(int x, int y)
 {
-	if (!queue)
-		return ;
-	free(queue->data);
-	free(queue);
+	t_point	point;
+
+	point.x = x;
+	point.y = y;
+	return (point);
 }

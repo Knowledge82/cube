@@ -6,14 +6,14 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 14:20:41 by vdarsuye          #+#    #+#             */
-/*   Updated: 2025/11/09 18:29:49 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2025/11/10 19:50:08 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # ifndef CUBE_H
 # define CUBE_H
-# define WIDTH 1920
-# define HEIGHT 1080
+# define WIDTH 800
+# define HEIGHT 600
 
 #include "libft.h"
 #include "MLX42.h"
@@ -130,9 +130,19 @@ typedef struct	s_queue
 	int	capacity;
 }	t_queue;
 
+typedef struct	s_bfs_data
+{
+	int	**visited;
+	t_queue	*queue;
+}	t_bfs_data;
+
 // FUNCS
-// movement.c
+
+// movement_bonus.c
 int     can_move_to(t_game *game, double x, double y);
+
+// movement.c
+void	clamp_player_position(t_game *game);
 void    handle_movement_w_s(t_game *game);
 void    handle_movement_a_d(t_game *game);
 void    handle_input(t_game *game);
@@ -176,7 +186,6 @@ void    key_handler(mlx_key_data_t keydata, void *param);
 void    game_loop(void *param);
 
 // file.c
-char    **load_file_data(int fd);
 char    **read_file(const char *filename);
 
 // parse.c
