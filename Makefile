@@ -45,45 +45,55 @@ INCLUDES = -I$(SRCS_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)/include/MLX42
 MLX_LDFLAGS = $(MLX_LIB) -lglfw -lm -ldl -pthread
 
 # Src files
-SRCS = $(SRCS_DIR)/main.c \
-	$(SRCS_DIR)/file.c \
-	$(SRCS_DIR)/init.c \
-	$(SRCS_DIR)/utils.c \
-	$(SRCS_DIR)/map.c \
-	$(SRCS_DIR)/map_utils.c \
-	$(SRCS_DIR)/queue.c \
-	$(SRCS_DIR)/parse.c \
-	$(SRCS_DIR)/parse_utils.c \
-	$(SRCS_DIR)/bfs.c \
-	$(SRCS_DIR)/validation.c \
-	$(SRCS_DIR)/free.c \
+SRCS = $(SRCS_DIR)/bfs.c \
 	$(SRCS_DIR)/draw.c \
 	$(SRCS_DIR)/draw_utils.c \
-	$(SRCS_DIR)/player.c \
-	$(SRCS_DIR)/ray.c \
+	$(SRCS_DIR)/file.c \
+	$(SRCS_DIR)/free.c \
+	$(SRCS_DIR)/init.c \
+	$(SRCS_DIR)/main.c \
+	$(SRCS_DIR)/map.c \
+	$(SRCS_DIR)/map_utils.c \
 	$(SRCS_DIR)/movement.c \
+	$(SRCS_DIR)/parse_color.c \
+	$(SRCS_DIR)/parse_config.c \
+	$(SRCS_DIR)/parse_map.c \
+	$(SRCS_DIR)/parse_texture.c \
+	$(SRCS_DIR)/parse_utils.c \
+	$(SRCS_DIR)/player.c \
+	$(SRCS_DIR)/queue.c \
+	$(SRCS_DIR)/ray.c \
+	$(SRCS_DIR)/render.c \
+	$(SRCS_DIR)/rotation.c \
 	$(SRCS_DIR)/textures.c \
+	$(SRCS_DIR)/utils.c \
+	$(SRCS_DIR)/validation.c \
 
 
 
-SRCS_BONUS = $(SRCS_DIR_BONUS)/main.c \
-	$(SRCS_DIR_BONUS)/file.c \
-	$(SRCS_DIR_BONUS)/init.c \
-	$(SRCS_DIR_BONUS)/utils.c \
-	$(SRCS_DIR_BONUS)/map.c \
-	$(SRCS_DIR_BONUS)/map_utils.c \
-	$(SRCS_DIR_BONUS)/queue.c \
-	$(SRCS_DIR_BONUS)/parse.c \
-	$(SRCS_DIR_BONUS)/parse_utils.c \
-	$(SRCS_DIR_BONUS)/bfs.c \
-	$(SRCS_DIR_BONUS)/validation.c \
-	$(SRCS_DIR_BONUS)/free.c \
+SRCS_BONUS = $(SRCS_DIR_BONUS)/bfs.c \
 	$(SRCS_DIR_BONUS)/draw.c \
 	$(SRCS_DIR_BONUS)/draw_utils.c \
-	$(SRCS_DIR_BONUS)/player.c \
-	$(SRCS_DIR_BONUS)/ray.c \
+	$(SRCS_DIR_BONUS)/file.c \
+	$(SRCS_DIR_BONUS)/free.c \
+	$(SRCS_DIR_BONUS)/init.c \
+	$(SRCS_DIR_BONUS)/main.c \
+	$(SRCS_DIR_BONUS)/map.c \
+	$(SRCS_DIR_BONUS)/map_utils.c \
 	$(SRCS_DIR_BONUS)/movement_bonus.c \
+	$(SRCS_DIR_BONUS)/parse_color.c \
+	$(SRCS_DIR_BONUS)/parse_config.c \
+	$(SRCS_DIR_BONUS)/parse_map.c \
+	$(SRCS_DIR_BONUS)/parse_texture.c \
+	$(SRCS_DIR_BONUS)/parse_utils.c \
+	$(SRCS_DIR_BONUS)/player.c \
+	$(SRCS_DIR_BONUS)/queue.c \
+	$(SRCS_DIR_BONUS)/ray.c \
+	$(SRCS_DIR_BONUS)/render.c \
+	$(SRCS_DIR_BONUS)/rotation.c \
 	$(SRCS_DIR_BONUS)/textures.c \
+	$(SRCS_DIR_BONUS)/utils.c \
+	$(SRCS_DIR_BONUS)/validation.c \
 
 OBJS = $(SRCS:$(SRCS_DIR)/%.c=$(OBJS_DIR)/%.o)
 BONUS_OBJS = $(SRCS_BONUS:$(SRCS_DIR_BONUS)/%.c=$(OBJS_DIR_BONUS)/%.o)

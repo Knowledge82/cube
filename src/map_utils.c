@@ -12,6 +12,33 @@
 
 #include "cube.h"
 
+int	copy_map_line(char **map_grid, int index,
+		const char *src, size_t target_width)
+{
+	char	*clean_line;
+	size_t	clean_len;
+
+	clean_line = ft_strtrim(src, "\n\r");
+	if (!clean_line)
+		return (0);
+	if (ft_strchr(clean_line, '\t'))
+		return (error_msg("Tab character in map. Use spaces."),
+			free(clean_line), 0);
+	map_grid[index] = ft_calloc(target_width + 1, sizeof(char));
+	if (!map_grid[index])
+		return (error_msg("Map memory allocation failed"), free(clean_line), 0);
+	clean_len = ft_strlen(clean_line);
+	ft_memcpy(map_grid[index], clean_line, clean_len);
+	while (clean_len < target_width)
+	{
+		map_grid[index][clean_len] = ' ';
+		clean_len++;
+	}
+	map_grid[index][target_width] = '\0';
+	free(clean_line);
+	return (1);
+}
+
 int	calculate_map_height(char **file)
 {
 	int	start;

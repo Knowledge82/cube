@@ -12,61 +12,70 @@
 
 #include "cube.h"
 
-int	copy_map_line(char **map_grid, int index, const char *src, size_t target_width)
+static int	init_map(char **file, t_map *map, int map_start)
 {
-	char	*clean_line;
-	size_t	clean_len;
-
-	clean_line = ft_strtrim(src, "\n\r");
-	if (!clean_line)
+	map->height = calculate_map_height(file);
+	map->width = calculate_map_width(file, map_start);
+	if (map->width <= 0)
+		return (error_msg("Invalid map width"), 0);
+	if (!allocate_map_grid(map))
 		return (0);
-	if (ft_strchr(clean_line, '\t'))
-		return (error_msg("Tab character in map. Use spaces."), free(clean_line), 0);
-	map_grid[index] = ft_calloc(target_width + 1, sizeof(char));
-	if (!map_grid[index])
-		return (error_msg("Map memory allocation failed"), free(clean_line), 0);
-	clean_len = ft_strlen(clean_line);
-	ft_memcpy(map_grid[index], clean_line, clean_len);
-	while (clean_len < target_width)
+	return (1);
+}
+
+static int	fill_map_grid(char **file, t_map *map, int map_start)
+{
+	int	map_end;
+	int	map_line;
+	int	i;
+
+	map_end = map_start + map->height;
+	map_line = map_start;
+	i = 0;
+	while (map_line < map_end)
 	{
-		map_grid[index][clean_len] = ' ';
-		clean_len++;
+		if (is_empty_line(file[map_line]))
+			return (error_msg("Empty line in the map"),
+				free_grid(map->grid), 0);
+		if (!copy_map_line(map->grid, i, file[map_line], map->width))
+		{
+			free_grid(map->grid);
+			return (0);
+		}
+		map_line++;
+		i++;
 	}
-	map_grid[index][target_width] = '\0';
-	free(clean_line);
+	map->grid[i] = NULL;
 	return (1);
 }
 
 int	read_map(char **file, t_map *map)
 {
 	int	map_start;
-	int	map_end;
-	int	map_line;
-	int	i;
 
 	map_start = find_map_start(file);
-	map_line = map_start;
-	map->height = calculate_map_height(file);
-	map->width = calculate_map_width(file, map_start);
-	if (map->width <= 0)
-		return (error_msg("Invalid map width"), 0);
-	map_end = map_start + map->height;
-	i = 0;
-	if (!allocate_map_grid(map))
+	if (!init_map(file, map, map_start))
 		return (0);
-	while(map_line < map_end)
+	if (!fill_map_grid(file, map, map_start))
 	{
-		if (is_empty_line(file[map_line]))
-		{
-			free_grid(map->grid);
-			return (error_msg("Empty line in the map"), 0);
-		}
-		if (!copy_map_line(map->grid, i, file[map_line], map->width))
-			return (free_grid(map->grid), 0);
-		map_line++;
-		i++;
+		free_grid(map->grid);
+		return (0);
 	}
-	map->grid[i] = NULL;
+	return (1);
+}
+
+static int	set_player_start(t_map *map, int i, int j, int *player_found)
+{
+	if (*player_found)
+		return (error_msg("Multiply player position"), 0);
+	else
+	{
+		map->player_start.x = j;
+		map->player_start.y = i;
+		map->start_dir = map->grid[i][j];
+		map->grid[i][j] = '0';
+		*player_found = 1;
+	}
 	return (1);
 }
 
@@ -85,16 +94,8 @@ int	find_player(t_map *map)
 		{
 			if (is_player_symbol(map->grid[i][j]))
 			{
-				if (player_found)
-					return (error_msg("Multiply player position"), 0);
-				else
-				{
-					map->player_start.x = j;
-					map->player_start.y = i;
-					map->start_dir = map->grid[i][j];
-					map->grid[i][j] = '0';
-					player_found = 1;
-				}
+				if (!set_player_start(map, i, j, &player_found))
+					return (0);
 			}
 			j++;
 		}
@@ -102,17 +103,5 @@ int	find_player(t_map *map)
 	}
 	if (!player_found)
 		return (error_msg("Player not found"), 0);
-	return (1);
-}
-
-
-int	parse_map(char **file, t_map *map)
-{
-	if (!read_map(file, map))
-		return (0);
-	if (!find_player(map))
-		return (free_grid(map->grid), 0);
-	if (!check_map_closure(map))
-		return (free_grid(map->grid), 0);
 	return (1);
 }

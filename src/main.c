@@ -12,6 +12,16 @@
 
 #include "cube.h"
 
+void	cleanup(t_game *game)
+{
+	free_textures(&game->textures);
+	if (game->map.grid)
+		free_grid(game->map.grid);
+	free_config(&game->config);
+	if (game->mlx)
+		mlx_terminate(game->mlx);
+}
+
 void	key_handler(mlx_key_data_t keydata, void *param)
 {
 	t_game	*game;
@@ -41,10 +51,7 @@ int	main(int argc, char **argv)
 	if (argc != 2)
 		return (error_msg("Usage: ./cube3D <map.cub>"), 1);
 	if (!init_game(argv[1], &game))
-	{
-	//	error_msg("Game initialization failed");
 		return (1);
-	}
 	if (!init_engine(&game, WIDTH, HEIGHT))
 		return (cleanup(&game), 1);
 	if (!load_all_textures(&game.textures, &game.config))

@@ -11,41 +11,29 @@
 /* ************************************************************************** */
 
 #include "cube.h"
+/* we use array in assign_direction() only by Norminette restriction
+   of number of function arguments (4, and we have 5).
+   Alternative way was create struct s_directions or substruct in s_player
+*/
+static void	assign_direction(t_player *player, const double *values)
+{
+	player->dir_x = values[0];
+	player->dir_y = values[1];
+	player->plane_x = values[2];
+	player->plane_y = values[3];
+}
 
 int	init_player(t_player *player, t_map *map)
 {
-	player->pos_x = map->player_start.x + 0.5; // 0.5 = on center of the cell
+	player->pos_x = map->player_start.x + 0.5;
 	player->pos_y = map->player_start.y + 0.5;
-
 	if (map->start_dir == 'N')
-	{
-		player->dir_x = 0; 
-		player->dir_y = -1;
-		player->plane_x = 0.66;
-		player->plane_y = 0;
-	}
+		assign_direction(player, (double []){0, -1, 0.66, 0});
 	else if (map->start_dir == 'S')
-	{
-		player->dir_x = 0; 
-		player->dir_y = 1;
-		player->plane_x = -0.66;
-		player->plane_y = 0;
-	}
+		assign_direction(player, (double []){0, 1, -0.66, 0});
 	else if (map->start_dir == 'W')
-	{
-		player->dir_x = -1; 
-		player->dir_y = 0;
-		player->plane_x = 0;
-		player->plane_y = -0.66;
-	}
+		assign_direction(player, (double []){-1, 0, 0, -0.66});
 	else if (map->start_dir == 'E')
-	{
-		player->dir_x = 1; 
-		player->dir_y = 0;
-		player->plane_x = 0;
-		player->plane_y = 0.66;
-	}
+		assign_direction(player, (double []){1, 0, 0, 0.66});
 	return (1);
 }
-
-

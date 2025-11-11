@@ -12,7 +12,7 @@
 
 #include "cube.h"
 
-void	init_draw_wall(t_game *game, t_ray *ray, t_wall_draw *wall)
+static void	init_draw_wall(t_game *game, t_ray *ray, t_wall_draw *wall)
 {
 	int	draw_start_unclipped;
 
@@ -33,7 +33,7 @@ void	init_draw_wall(t_game *game, t_ray *ray, t_wall_draw *wall)
 	wall->tex_x = calculate_tex_x(game, ray, wall->current_texture);
 }
 
-void	draw_ceiling(t_game *game, int x, int draw_start)
+static void	draw_ceiling(t_game *game, int x, int draw_start)
 {
 	int			y;
 	uint32_t	ceiling_color;
@@ -47,7 +47,7 @@ void	draw_ceiling(t_game *game, int x, int draw_start)
 	}
 }
 
-void	draw_floor(t_game *game, int x, int draw_end)
+static void	draw_floor(t_game *game, int x, int draw_end)
 {
 	int			y;
 	uint32_t	floor_color;
@@ -61,7 +61,7 @@ void	draw_floor(t_game *game, int x, int draw_end)
 	}
 }
 
-void	draw_wall(t_game *game, int x, t_wall_draw *wall)
+static void	draw_wall(t_game *game, int x, t_wall_draw *wall)
 {
 	uint32_t	color;
 	int			y;

@@ -12,6 +12,14 @@
 
 #include "cube.h"
 
+static int	is_valid_delim(char *line, int pos)
+{
+	if (ft_is_whitespace(line[pos]) || line[pos] == '\0')
+		return (1);
+	else
+		return (0);
+}
+
 char	*get_identifier(char *line)
 {
 	char	*id;
@@ -21,48 +29,19 @@ char	*get_identifier(char *line)
 	i = 0;
 	while (ft_is_whitespace(line[i]))
 		i++;
-	if (ft_strncmp(&line[i], "NO", 2) == 0 && (ft_is_whitespace(line[i + 2]) || line[i + 2] == '\0'))
+	if (ft_strncmp(&line[i], "NO", 2) == 0 && is_valid_delim(line, i + 2))
 		id = ft_strdup("NO");
-	else if (ft_strncmp(&line[i], "SO", 2) == 0 && (ft_is_whitespace(line[i + 2]) || line[i + 2] == '\0'))
+	else if (ft_strncmp(&line[i], "SO", 2) == 0 && is_valid_delim(line, i + 2))
 		id = ft_strdup("SO");
-	else if (ft_strncmp(&line[i], "WE", 2) == 0 && (ft_is_whitespace(line[i + 2]) || line[i + 2] == '\0'))
+	else if (ft_strncmp(&line[i], "WE", 2) == 0 && is_valid_delim(line, i + 2))
 		id = ft_strdup("WE");
-	else if (ft_strncmp(&line[i], "EA", 2) == 0 && (ft_is_whitespace(line[i + 2]) || line[i + 2] == '\0'))
+	else if (ft_strncmp(&line[i], "EA", 2) == 0 && is_valid_delim(line, i + 2))
 		id = ft_strdup("EA");
-	else if (line[i] == 'F' && (ft_is_whitespace(line[i + 1]) || line[i + 1] == '\0'))
+	else if (line[i] == 'F' && is_valid_delim(line, i + 1))
 		id = ft_strdup("F");
-	else if (line[i] == 'C' && (ft_is_whitespace(line[i + 1]) || line[i + 1] == '\0'))
+	else if (line[i] == 'C' && is_valid_delim(line, i + 1))
 		id = ft_strdup("C");
 	return (id);
-}
-
-char	*extract_path(char *line, char *id)
-{
-	char	*path;
-	int		i;
-	size_t	len;
-
-	i = 0;
-	while (ft_is_whitespace(line[i]))
-		i++;
-	i = i + ft_strlen(id);
-	while (ft_is_whitespace(line[i]))
-		i++;
-	path = ft_strdup(line + i);
-	if (!path)
-		return (error_msg("Mem alloc failed"), NULL);
-	len = ft_strlen(path);
-	while ((len > 0) && ft_is_whitespace(path[len - 1]))
-	{
-		path[len - 1] = '\0';
-		len--;
-	}
-	if (path[0] == '\0')
-	{
-		error_msg("Empty path");
-		return (free(path), NULL);
-	}
-	return (path);
 }
 
 int	check_color_data_range(int r, int g, int b)
@@ -93,7 +72,8 @@ int	validate_config(t_config *config)
 	if (!file_exist(config->north) || !file_exist(config->south)
 		|| !file_exist(config->west) || !file_exist(config->east))
 		return (0);
-	if (config->floor_color == 0xFFFFFFFF || config->ceiling_color == 0xFFFFFFFF)
+	if (config->floor_color == 0xFFFFFFFF
+		|| config->ceiling_color == 0xFFFFFFFF)
 		return (error_msg("Missing color(s)"), 0);
 	return (1);
 }

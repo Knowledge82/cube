@@ -15,7 +15,6 @@
 void	init_game_data(t_game *game)
 {
 	ft_memset(game, 0, sizeof(t_game));
-
 	game->move_speed = 0.05;
 	game->rotation_speed = 0.02;
 	game->config.north = NULL;
@@ -47,17 +46,11 @@ int	init_game(const char *filename, t_game *game)
 	if (map_start == -1)
 		return (ft_free_array(file), error_msg("Map not found"), 0);
 	if (!parse_config(file, map_start, &game->config))
-	{
-		ft_free_array(file);
-		free_config(&game->config);
-		return (error_msg("Invalid map config"), 0);
-	}
+		return (error_msg("Invalid map config"), ft_free_array(file),
+			free_config(&game->config), 0);
 	if (!parse_map(file, &game->map))
-	{
-		ft_free_array(file);
-		free_config(&game->config);
-		return (error_msg("Invalid map"), 0);
-	}
+		return (error_msg("Invalid map"), ft_free_array(file),
+			free_config(&game->config), 0);
 	if (!init_player(&game->player, &game->map))
 		return (0);
 	ft_free_array(file);

@@ -99,12 +99,12 @@ int	process_bfs(t_map *map, t_bfs_data *bfs)
 {
 	t_point	current;
 	t_point	new_pos;
-	int	d;
-	
+	int		d;
+
 	while (!is_empty_queue(bfs->queue))
 	{
 		current = dequeue(bfs->queue);
-		d = 0;// проверяем всех 4 соседей текущей клетки
+		d = 0;
 		while (d < 4)
 		{
 			new_pos = create_point(current.x + g_dx[d], current.y + g_dy[d]);
@@ -112,22 +112,6 @@ int	process_bfs(t_map *map, t_bfs_data *bfs)
 				return (0);
 			d++;
 		}
-
 	}
 	return (1);
-}
-
-int	check_map_closure(t_map *map)
-{
-	t_bfs_data	*bfs;
-	int		result;
-
-	bfs = init_bfs(map);
-	if (!bfs)
-		return (0);
-	result = process_bfs(map, bfs);
-	free_queue(bfs->queue);
-	free_visited(bfs->visited, map->height);
-	free(bfs);
-	return (result);
 }

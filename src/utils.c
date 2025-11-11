@@ -20,17 +20,16 @@ void	error_msg(char *msg)
 	ft_putstr_fd("\n", STDERR_FILENO);
 }
 
-int     check_extension(const char *filename)
+int	check_extension(const char *filename)
 {
-        int     len;
+	int	len;
 
 	if (!filename)
 		return (0);
-        len = ft_strlen(filename);
-        if (len < 4)
-	       return 0;
+	len = ft_strlen(filename);
+	if (len < 4)
+		return (0);
 	if (ft_strncmp(filename + len - 4, ".cub", 4) == 0)
-                return (1);
+		return (1);
 	return (0);
 }
-

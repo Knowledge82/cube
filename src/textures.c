@@ -12,30 +12,6 @@
 
 #include "cube.h"
 
-void	free_textures(t_textures *textures)
-{
-	if (textures->north != NULL)
-	{
-		mlx_delete_texture(textures->north);
-		textures->north = NULL;
-	}
-	if (textures->south != NULL)
-	{
-		mlx_delete_texture(textures->south);
-		textures->south = NULL;
-	}
-	if (textures->west != NULL)
-	{
-		mlx_delete_texture(textures->west);
-		textures->west = NULL;
-	}
-	if (textures->east != NULL)
-	{
-		mlx_delete_texture(textures->east);
-		textures->east = NULL;
-	}
-}
-
 int	load_texture(mlx_texture_t **texture_field, const char *path)
 {
 	mlx_texture_t	*tmp;
@@ -53,11 +29,10 @@ int	load_all_textures(t_textures *textures, t_config *config)
 	textures->south = NULL;
 	textures->west = NULL;
 	textures->east = NULL;
-
 	if (!load_texture(&textures->north, config->north)
 		|| !load_texture(&textures->south, config->south)
-	       	|| !load_texture(&textures->west, config->west)
-	       	|| !load_texture(&textures->east, config->east))
+		|| !load_texture(&textures->west, config->west)
+		|| !load_texture(&textures->east, config->east))
 		return (free_textures(textures), 0);
 	return (1);
 }
