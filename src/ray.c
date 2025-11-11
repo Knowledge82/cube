@@ -84,6 +84,12 @@ void	dda(t_game *game, t_ray *ray)
 			ray->map_y += ray->step_y;
 			ray->side = 1;
 		}
+		if (ray->map_x < 0 || ray->map_x >= game->map.width
+				|| ray->map_y < 0 || ray->map_y >= game->map.height)
+		{
+			hit = 1;
+			break;
+		}
 		if (game->map.grid[ray->map_y][ray->map_x] == '1')
 			hit = 1;
 	}
