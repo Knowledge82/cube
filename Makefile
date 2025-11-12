@@ -6,7 +6,7 @@
 #    By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/08 16:54:19 by vdarsuye          #+#    #+#              #
-#    Updated: 2025/11/10 18:27:01 by vdarsuye         ###   ########.fr        #
+#    Updated: 2025/11/12 14:46:32 by vdarsuye         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -63,6 +63,7 @@ SRCS = $(SRCS_DIR)/bfs.c \
 	$(SRCS_DIR)/player.c \
 	$(SRCS_DIR)/queue.c \
 	$(SRCS_DIR)/ray.c \
+	$(SRCS_DIR)/ray_utils.c \
 	$(SRCS_DIR)/render.c \
 	$(SRCS_DIR)/rotation.c \
 	$(SRCS_DIR)/textures.c \
@@ -89,6 +90,7 @@ SRCS_BONUS = $(SRCS_DIR_BONUS)/bfs.c \
 	$(SRCS_DIR_BONUS)/player.c \
 	$(SRCS_DIR_BONUS)/queue.c \
 	$(SRCS_DIR_BONUS)/ray.c \
+	$(SRCS_DIR_BONUS)/ray_utils.c \
 	$(SRCS_DIR_BONUS)/render.c \
 	$(SRCS_DIR_BONUS)/rotation.c \
 	$(SRCS_DIR_BONUS)/textures.c \

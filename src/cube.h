@@ -6,14 +6,14 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 14:20:41 by vdarsuye          #+#    #+#             */
-/*   Updated: 2025/11/10 19:50:08 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2025/11/12 14:46:03 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUBE_H
 # define CUBE_H
-# define WIDTH 800
-# define HEIGHT 600
+# define WIDTH 1920
+# define HEIGHT 1080
 
 # include "libft.h"
 # include "MLX42.h"
@@ -136,6 +136,10 @@ void			clamp_player_position(t_game *game);
 void			init_ray(t_game *game, int x, t_ray *ray);
 void			dda(t_game *game, t_ray *ray);
 void			calculate_wall_distance(t_game *game, t_ray *ray);
+
+// ray_utils.c
+void			calculate_delta_dist(t_ray *ray);
+void			init_step_and_side_dist(t_game *game, t_ray *ray);
 
 // +render.c
 void			render_frame(t_game *game);
