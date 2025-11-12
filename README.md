@@ -1,3 +1,13 @@
+<p align="center">
+  <img src="https://capsule-render.vercel.app/api?type=waving&height=180&color=gradient&text=cub3D%20Project%20%7C%2042%20Barcelona&fontAlign=50&fontAlignY=40&fontSize=40&desc=Raycasting%20Engine%20in%20C&descAlignY=60&descAlign=50" />
+</p>
+
+![Language](https://img.shields.io/badge/language-C-blue.svg)
+![MiniLibX](https://img.shields.io/badge/MiniLibX-active-green.svg)
+![Norminette](https://img.shields.io/badge/style-Norminette-orange.svg)
+![Status](https://img.shields.io/badge/status-finished-brightgreen.svg)
+
+
 # 🧩 cub3D — Raycasting Maze Game (School 42 Project)
 
 > 🕹️ Проект вдохновлён **Wolfenstein 3D (1992)** — легендарным 3D-шутером, где игрок перемещается по лабиринту с видом от первого лица, используя технику **raycasting**.
@@ -14,45 +24,15 @@
 
 ## 📦 Структура `.cub` файла
 
-Файл `.cub` содержит:
+Файл .cub содержит всю необходимую информацию для запуска игры:
 
 - Пути к текстурам четырёх стен (`NO`, `SO`, `WE`, `EA`)
 - Цвета пола и потолка (`F`, `C`) в формате `R,G,B`
 - Карту лабиринта из символов `0`, `1`, `N`, `S`, `E`, `W`
 
-Пример:
-
-```text
-NO ./textures/north_wall.png
-SO ./textures/south_wall.png
-WE ./textures/west_wall.png
-EA ./textures/east_wall.png
-
-F 220,100,0
-C 225,30,0
-
-1111111111111111111111111
-1000000000110000000000001
-1011000001110000000000001
-1001000000000000000000001
-111111111011000001110000001
-100000000011000001110111111
-11110111111111011100000010001
-11000000110101011100000010001
-10000000000000001100000010001
-11000001110101011111011110N0111
-111111111111111111111111111
-
-Фаза 1: Чтение и валидация файла с картой
-Общая задача
-Файл .cub содержит всю необходимую информацию для запуска игры:
-
-Текстуры для 4 сторон стен (NO, SO, WE, EA)
-Цвета потолка и пола (F, C) в формате RGB
-Карту лабиринта из символов 0 (пусто), 1 (стена), N/S/E/W (стартовая позиция игрока)
-
 Пример файла карты:
 
+```text
 NO ./textures/north_wall.png
 SO ./textures/south_wall.png
 WE ./textures/west_wall.png
