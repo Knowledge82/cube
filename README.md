@@ -5,7 +5,7 @@
 # 🎮 cub3D — Raycasting Maze Game (School 42 Project)
 
 ## Описание проекта
-**Cub3D** — это графический проект школы 42, целью которого является создание "3D" игры в стиле легендарного **Wolfenstein 3D** (1992).
+**Cub3D** — это графический проект школы 42, целью которого является создание "3D" игры в стиле легендарного **Wolfenstein 3D** (1992).  
 ![Status](https://img.shields.io/badge/status-finished-brightgreen.svg)
 
 ### Технологии:
