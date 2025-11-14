@@ -12,8 +12,20 @@
 
 #ifndef CUBE_H
 # define CUBE_H
-# define WIDTH 1920
-# define HEIGHT 1080
+# define WIDTH 800
+# define HEIGHT 600
+# ifdef BONUS
+# define MINIMAP_TILE_SIZE (WIDTH / 150)
+# define MINIMAP_RADIUS 8
+# define MINIMAP_OFFSET (WIDTH / 100)
+// MINIMAP_RADIUS (WIDTH / 240)
+
+# define MINIMAP_COLOR_WALL 0x808080FF //gray
+# define MINIMAP_COLOR_EMPTY 0xE0E0E0FF //light gray
+# define MINIMAP_COLOR_PLAYER 0xFF0000FF //red
+# define MINIMAP_COLOR_BORDER 0x000000FF //black
+# define MOUSE_SENSITIVITY 0.002
+#endif
 
 # include "libft.h"
 # include "MLX42.h"
@@ -92,6 +104,12 @@ typedef struct s_player
 	double	plane_y;
 }	t_player;
 
+typedef struct s_mouse
+{
+	int	last_x;
+	int	last_y;
+}	t_mouse;
+
 typedef struct s_game
 {
 	mlx_t		*mlx;
@@ -100,6 +118,7 @@ typedef struct s_game
 	t_map		map;
 	t_textures	textures;
 	t_player	player;
+	t_mouse		mouse;
 	double		move_speed;
 	double		rotation_speed;
 }	t_game;
@@ -127,6 +146,7 @@ int				init_engine(t_game *game, int width, int height);
 
 // +rotation.c
 void			handle_rotation(t_game *game);
+void			rotate_player(t_game *game, double angle);
 
 // +movement.c
 void			handle_input(t_game *game);
@@ -231,7 +251,20 @@ int				can_visit(t_point pos, t_map *map, int **visited);
 int				check_cell(t_map *map, t_point pos,
 					t_queue *queue, int **visited);
 
+# ifdef BONUS
 // +movement_bonus.c
 int				can_move_to(t_game *game, double x, double y);
 
+// main_bonus.c
+// minimap_bonus.c
+void			draw_minimap(t_game *game);
+
+// minimap_utils_bonus.c
+int				get_screen_pos(int offset);
+
+// mouse_bonus.c
+void			init_mouse(t_game *game);
+void			handle_mouse_rotation(t_game *game);
+
+#endif
 #endif

@@ -12,7 +12,7 @@
 
 #include "cube.h"
 
-static void	rotate_player(t_game *game, double angle)
+void	rotate_player(t_game *game, double angle)
 {
 	double	old_dir_x;
 	double	old_plane_x;

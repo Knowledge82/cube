@@ -24,6 +24,7 @@ NAME = cub3D
 NAME_BONUS = cub3D_bonus
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror -g3 -fsanitize=address
+CFLAGS_BONUS = $(CFLAGS) -DBONUS
 
 # Dirs
 SRCS_DIR = src
@@ -44,17 +45,14 @@ INCLUDES = -I$(SRCS_DIR) -I$(LIBFT_DIR) -I$(MLX_DIR)/include/MLX42
 # Linker flags
 MLX_LDFLAGS = $(MLX_LIB) -lglfw -lm -ldl -pthread
 
-# Src files
-SRCS = $(SRCS_DIR)/bfs.c \
+# Common src files for both parts
+SRCS_COMMON = $(SRCS_DIR)/bfs.c \
 	$(SRCS_DIR)/draw.c \
 	$(SRCS_DIR)/draw_utils.c \
 	$(SRCS_DIR)/file.c \
 	$(SRCS_DIR)/free.c \
-	$(SRCS_DIR)/init.c \
-	$(SRCS_DIR)/main.c \
 	$(SRCS_DIR)/map.c \
 	$(SRCS_DIR)/map_utils.c \
-	$(SRCS_DIR)/movement.c \
 	$(SRCS_DIR)/parse_color.c \
 	$(SRCS_DIR)/parse_config.c \
 	$(SRCS_DIR)/parse_map.c \
@@ -70,35 +68,29 @@ SRCS = $(SRCS_DIR)/bfs.c \
 	$(SRCS_DIR)/utils.c \
 	$(SRCS_DIR)/validation.c \
 
+# Src files for mandatory part
+SRCS_MANDATORY = $(SRCS_DIR)/main.c \
+	$(SRCS_DIR)/movement.c \
+	$(SRCS_DIR)/init.c
 
-
-SRCS_BONUS = $(SRCS_DIR_BONUS)/bfs.c \
-	$(SRCS_DIR_BONUS)/draw.c \
-	$(SRCS_DIR_BONUS)/draw_utils.c \
-	$(SRCS_DIR_BONUS)/file.c \
-	$(SRCS_DIR_BONUS)/free.c \
-	$(SRCS_DIR_BONUS)/init.c \
-	$(SRCS_DIR_BONUS)/main.c \
-	$(SRCS_DIR_BONUS)/map.c \
-	$(SRCS_DIR_BONUS)/map_utils.c \
+# Src files for bonus part
+SRCS_BONUS_ONLY = $(SRCS_DIR_BONUS)/main_bonus.c \
+	$(SRCS_DIR_BONUS)/minimap_bonus.c \
+	$(SRCS_DIR_BONUS)/minimap_utils_bonus.c \
 	$(SRCS_DIR_BONUS)/movement_bonus.c \
-	$(SRCS_DIR_BONUS)/parse_color.c \
-	$(SRCS_DIR_BONUS)/parse_config.c \
-	$(SRCS_DIR_BONUS)/parse_map.c \
-	$(SRCS_DIR_BONUS)/parse_texture.c \
-	$(SRCS_DIR_BONUS)/parse_utils.c \
-	$(SRCS_DIR_BONUS)/player.c \
-	$(SRCS_DIR_BONUS)/queue.c \
-	$(SRCS_DIR_BONUS)/ray.c \
-	$(SRCS_DIR_BONUS)/ray_utils.c \
-	$(SRCS_DIR_BONUS)/render.c \
-	$(SRCS_DIR_BONUS)/rotation.c \
-	$(SRCS_DIR_BONUS)/textures.c \
-	$(SRCS_DIR_BONUS)/utils.c \
-	$(SRCS_DIR_BONUS)/validation.c \
+	$(SRCS_DIR_BONUS)/mouse_bonus.c \
+	$(SRCS_DIR_BONUS)/init_bonus.c
 
+SRCS = $(SRCS_COMMON) $(SRCS_MANDATORY)
+SRCS_BONUS = $(SRCS_COMMON) $(SRCS_BONUS_ONLY)
+
+# Obj files for mandatory part
 OBJS = $(SRCS:$(SRCS_DIR)/%.c=$(OBJS_DIR)/%.o)
-BONUS_OBJS = $(SRCS_BONUS:$(SRCS_DIR_BONUS)/%.c=$(OBJS_DIR_BONUS)/%.o)
+
+# Obj for bonus part
+OBJS_COMMON = $(SRCS_COMMON:$(SRCS_DIR)/%.c=$(OBJS_DIR_BONUS)/%.o)
+OBJS_BONUS_ONLY = $(SRCS_BONUS_ONLY:$(SRCS_DIR_BONUS)/%.c=$(OBJS_DIR_BONUS)/%.o)
+BONUS_OBJS = $(OBJS_COMMON) $(OBJS_BONUS_ONLY)
 
 # Rules
 all: $(NAME)
@@ -158,7 +150,11 @@ $(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c
 
 $(OBJS_DIR_BONUS)/%.o: $(SRCS_DIR_BONUS)/%.c
 	@mkdir -p $(OBJS_DIR_BONUS)
-	@$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
+	@$(CC) $(CFLAGS_BONUS) $(INCLUDES) -c $< -o $@
+
+$(OBJS_DIR_BONUS)/%.o: $(SRCS_DIR)/%.c
+	@mkdir -p $(OBJS_DIR_BONUS)
+	@$(CC) $(CFLAGS_BONUS) $(INCLUDES) -c $< -o $@
 
 clean:
 	@rm -rf $(OBJS_DIR) $(OBJS_DIR_BONUS)
