@@ -1,0 +1,23 @@
+# Build artifacts
+*.o
+*.a
+cub3D
+cub3D_bonus
+
+# Object directories
+obj/
+libft/*.o
+libft/*.a
+
+# MLX42 build directory
+MLX42/build/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
