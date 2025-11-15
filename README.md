@@ -4,7 +4,7 @@
 
 # 🎮 cub3D — Raycasting Maze Game (School 42 Project)
 
-**Languages:** [🇪🇸 Español](README.es.md) | [🇷🇺 Русский](README.md)
+**Languages:** [🇪🇸 Español](README.es.md) | [🇷🇺 Русский](README.ru.md)
 
 ## Project Description
 **Cub3D** is a graphical project from School 42, aimed at creating a "3D" game in the style of the legendary **Wolfenstein 3D** (1992).  

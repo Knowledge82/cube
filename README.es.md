@@ -4,7 +4,7 @@
 
 # 🎮 cub3D — Juego de Laberinto con Raycasting (Proyecto School 42)
 
-**Idiomas:** [🇬🇧 English](README.en.md) | [🇷🇺 Русский](README.md)
+**Idiomas:** [🇬🇧 English](README.md) | [🇷🇺 Русский](README.ru.md)
 
 ## Descripción del Proyecto
 **Cub3D** es un proyecto gráfico de School 42, cuyo objetivo es crear un juego "3D" al estilo del legendario **Wolfenstein 3D** (1992).  
