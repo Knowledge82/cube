@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&height=180&color=gradient&text=cub3D%20Project%20%7C%2042%20Barcelona&fontAlign=50&fontAlignY=40&fontSize=40&desc=Raycasting%20Engine%20in%20C&descAlignY=60&descAlign=50" />
+  <img src="https://capsule-render.vercel.app/api?type=waving&height=180&color=gradient&text= Pavel%20Doltu%20cub3D%20Project%20%7C%2042%20Barcelona&fontAlign=50&fontAlignY=40&fontSize=40&desc=Raycasting%20Engine%20in%20C&descAlignY=60&descAlign=50" />
 </p>
 
 # 🎮 cub3D — Raycasting Maze Game (School 42 Project)
@@ -30,17 +30,17 @@
 
 - [Структура проекта](#структура-проекта)
 - [Что такое Ray Casting](#что-такое-ray-casting)
-- [Фаза 1: Парсинг и валидация](#фаза-1--парсинг-и-валидация)
+- [Фаза 1: Парсинг и валидация](#фаза-1:-парсинг-и-валидация)
   - [Структура файла .cub](#--cтруктура-файла-cub)
   - [Инициализация структур и чтение файла](#инициализация-структур-и-чтение-файла)
   - [Парсинг конфигурации](#парсинг-конфигурации)
   - [Парсинг карты](#парсинг-карты)
   - [Валидация карты](#валидация-карты)
   - [BFS для проверки замкнутости](#bfs-для-проверки-замкнутости)
-- [Фаза 2: Ray Casting и DDA](#фаза-2-ray-casting-и-dda)
-- [Фаза 3: Рендеринг](#фаза-3-рендеринг)
-- [Установка и запуск](#установка-и-запуск)
-- [Ресурсы](#ресурсы)
+- [Фаза 2: Ray Casting и DDA](##-Фаза-2:-Ray-Casting-и-DDA)
+- [Фаза 3: Рендеринг](#-Фаза-3:-Рендеринг)
+- [Установка и запуск](#-Установка-и-запуск)
+
 
 ## Структура проекта
 
@@ -730,7 +730,7 @@ typedef struct s_player
 # Фаза 3️⃣: Рендеринг
 ---
 <p align="left">
-  <img src="./images/rendering.jpg" alt="Rendering" width="300">
+  <img src="./images/rendering.png" alt="Rendering" width="300">
 </p>
 ---
 ## Содержание фазы 3
