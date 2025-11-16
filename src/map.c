@@ -6,7 +6,7 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/06 12:31:38 by vdarsuye          #+#    #+#             */
-/*   Updated: 2025/11/10 18:30:01 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2025/11/16 22:45:08 by pdoltu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,7 @@ static int	fill_map_grid(char **file, t_map *map, int map_start)
 			return (error_msg("Empty line in the map"),
 				free_grid(map->grid), 0);
 		if (!copy_map_line(map->grid, i, file[map_line], map->width))
-		{
-			free_grid(map->grid);
 			return (0);
-		}
 		map_line++;
 		i++;
 	}
