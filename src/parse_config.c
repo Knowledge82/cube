@@ -41,7 +41,7 @@ int	parse_config(char **file, int map_start, t_config *config)
 			continue ;
 		}
 		if (!parse_identifier(file[i], config))
-			return (error_msg("Parse map config failed"), 0);
+			return (0);
 		i++;
 	}
 	if (!validate_config(config))

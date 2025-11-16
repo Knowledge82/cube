@@ -58,6 +58,6 @@ int	parse_texture(char *line, t_config *config, char *id)
 		return (error_msg("Duplicate texture identifier"), 0);
 	*field_ptr = extract_path(line, id);
 	if (!*field_ptr)
-		return (error_msg("Path error"), 0);
+		return (0);
 	return (1);
 }
