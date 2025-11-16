@@ -12,6 +12,20 @@
 
 #include "cube.h"
 
+static void	trim_trailing_whitespace(char *str)
+{
+	int	len;
+
+	if (!str)
+		return ;
+	len = ft_strlen(str);
+	while (len > 0 && ft_is_whitespace(str[len - 1]))
+	{
+		str[len - 1] = '\0';
+		len--;
+	}
+}
+
 int	copy_map_line(char **map_grid, int index,
 		const char *src, size_t target_width)
 {
@@ -21,6 +35,7 @@ int	copy_map_line(char **map_grid, int index,
 	clean_line = ft_strtrim(src, "\n\r");
 	if (!clean_line)
 		return (0);
+	trim_trailing_whitespace(clean_line);
 	if (ft_strchr(clean_line, '\t'))
 		return (error_msg("Tab character in map. Use spaces."),
 			free(clean_line), 0);
@@ -67,6 +82,7 @@ int	calculate_map_width(char **file, int map_start)
 		line = ft_strtrim(file[i], "\n\r");
 		if (!line)
 			return (error_msg("Memory allocation failed"), -1);
+		trim_trailing_whitespace(line);
 		len = ft_strlen(line);
 		if (len > max_width)
 			max_width = len;
