@@ -34,11 +34,9 @@ int	init_game(const char *filename, t_game *game)
 	if (map_start == -1)
 		return (ft_free_array(file), error_msg("Map not found"), 0);
 	if (!parse_config(file, map_start, &game->config))
-		return (error_msg("Invalid map config"), ft_free_array(file),
-			free_config(&game->config), 0);
+		return (ft_free_array(file), free_config(&game->config), 0);
 	if (!parse_map(file, &game->map))
-		return (error_msg("Invalid map"), ft_free_array(file),
-			free_config(&game->config), 0);
+		return (ft_free_array(file), free_config(&game->config), 0);
 	if (!init_player(&game->player, &game->map))
 		return (0);
 	ft_free_array(file);
