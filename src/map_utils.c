@@ -6,7 +6,7 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 18:22:54 by vdarsuye          #+#    #+#             */
-/*   Updated: 2025/11/17 18:38:30 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2025/11/17 18:46:07 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ int	copy_map_line(char **map_grid, int index,
 	while (clean_line[i])
 	{
 		if (clean_line[i] == '\t')
-			return (error_msg("Tab character in map. Use spaces."), free(clean_line),
-			 0);
+			return (error_msg("Tab character in map. Use spaces."),
+				free(clean_line), 0);
 		i++;
 	}
 	map_grid[index] = ft_calloc(target_width + 1, sizeof(char));
@@ -36,13 +36,9 @@ int	copy_map_line(char **map_grid, int index,
 	clean_len = ft_strlen(clean_line);
 	ft_memcpy(map_grid[index], clean_line, clean_len);
 	while (clean_len < target_width)
-	{
-		map_grid[index][clean_len] = ' ';
-		clean_len++;
-	}
+		map_grid[index][clean_len++] = ' ';
 	map_grid[index][target_width] = '\0';
-	free(clean_line);
-	return (1);
+	return (free(clean_line), 1);
 }
 
 int	calculate_map_height(char **file)
