@@ -6,7 +6,7 @@
 #    By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/10/08 16:54:19 by vdarsuye          #+#    #+#              #
-#    Updated: 2025/11/12 14:46:32 by vdarsuye         ###   ########.fr        #
+#    Updated: 2025/11/17 16:03:00 by vdarsuye         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -48,38 +48,52 @@ MLX_LDFLAGS = $(MLX_LIB) -lglfw -lm -ldl -pthread
 # Common src files for both parts
 SRCS_COMMON = $(SRCS_DIR)/bfs.c \
 	$(SRCS_DIR)/draw.c \
-	$(SRCS_DIR)/draw_utils.c \
 	$(SRCS_DIR)/file.c \
-	$(SRCS_DIR)/free.c \
 	$(SRCS_DIR)/map.c \
 	$(SRCS_DIR)/map_utils.c \
 	$(SRCS_DIR)/parse_color.c \
 	$(SRCS_DIR)/parse_config.c \
 	$(SRCS_DIR)/parse_map.c \
-	$(SRCS_DIR)/parse_texture.c \
-	$(SRCS_DIR)/parse_utils.c \
 	$(SRCS_DIR)/player.c \
 	$(SRCS_DIR)/queue.c \
-	$(SRCS_DIR)/ray.c \
 	$(SRCS_DIR)/ray_utils.c \
-	$(SRCS_DIR)/render.c \
 	$(SRCS_DIR)/rotation.c \
-	$(SRCS_DIR)/textures.c \
-	$(SRCS_DIR)/utils.c \
-	$(SRCS_DIR)/validation.c \
+	$(SRCS_DIR)/utils.c
 
 # Src files for mandatory part
 SRCS_MANDATORY = $(SRCS_DIR)/main.c \
 	$(SRCS_DIR)/movement.c \
-	$(SRCS_DIR)/init.c
+	$(SRCS_DIR)/init.c \
+	$(SRCS_DIR)/parse_texture.c \
+	$(SRCS_DIR)/parse_utils.c \
+	$(SRCS_DIR)/draw_utils.c \
+	$(SRCS_DIR)/textures.c \
+	$(SRCS_DIR)/free.c \
+	$(SRCS_DIR)/validation.c \
+	$(SRCS_DIR)/render.c \
+	$(SRCS_DIR)/ray.c
 
 # Src files for bonus part
 SRCS_BONUS_ONLY = $(SRCS_DIR_BONUS)/main_bonus.c \
 	$(SRCS_DIR_BONUS)/minimap_bonus.c \
 	$(SRCS_DIR_BONUS)/minimap_utils_bonus.c \
 	$(SRCS_DIR_BONUS)/movement_bonus.c \
+	$(SRCS_DIR_BONUS)/movement_utils_bonus.c \
 	$(SRCS_DIR_BONUS)/mouse_bonus.c \
-	$(SRCS_DIR_BONUS)/init_bonus.c
+	$(SRCS_DIR_BONUS)/init_bonus.c \
+	$(SRCS_DIR_BONUS)/doors_bonus.c \
+	$(SRCS_DIR_BONUS)/doors_validate_bonus.c \
+	$(SRCS_DIR_BONUS)/draw_utils_bonus.c \
+	$(SRCS_DIR_BONUS)/parse_utils_bonus.c \
+	$(SRCS_DIR_BONUS)/parse_texture_bonus.c \
+	$(SRCS_DIR_BONUS)/ray_bonus.c \
+	$(SRCS_DIR_BONUS)/free_bonus.c \
+	$(SRCS_DIR_BONUS)/sprite_bonus.c \
+	$(SRCS_DIR_BONUS)/sprite_draw_bonus.c \
+	$(SRCS_DIR_BONUS)/render_bonus.c \
+	$(SRCS_DIR_BONUS)/render_sprite_bonus.c \
+	$(SRCS_DIR_BONUS)/validation_bonus.c \
+	$(SRCS_DIR_BONUS)/textures_bonus.c
 
 SRCS = $(SRCS_COMMON) $(SRCS_MANDATORY)
 SRCS_BONUS = $(SRCS_COMMON) $(SRCS_BONUS_ONLY)

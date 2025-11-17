@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   minimap_bonus.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/15 12:07:17 by vdarsuye          #+#    #+#             */
+/*   Updated: 2025/11/16 19:44:53 by vdarsuye         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cube.h"
 
 static void	draw_minimap_tile(mlx_image_t *img, int x, int y, uint32_t color)
@@ -10,7 +22,7 @@ static void	draw_minimap_tile(mlx_image_t *img, int x, int y, uint32_t color)
 	{
 		j = 0;
 		while (j < MINIMAP_TILE_SIZE)
-		{//проверка, чтобы не выйти за границы экрана(если мини-карта частично за пределами)
+		{
 			if (x + j < (int)img->width && y + i < (int)img->height)
 				mlx_put_pixel(img, x + j, y + i, color);
 			j++;
@@ -26,7 +38,6 @@ static void	draw_minimap_border(mlx_image_t *img, int size)
 	int	y;
 
 	total_pixel_size = size * MINIMAP_TILE_SIZE;
-	//горизонтальные линии
 	x = MINIMAP_OFFSET;
 	while (x < MINIMAP_OFFSET + total_pixel_size)
 	{
@@ -35,7 +46,6 @@ static void	draw_minimap_border(mlx_image_t *img, int size)
 			MINIMAP_COLOR_BORDER);
 		x++;
 	}
-	//вертикальные
 	y = MINIMAP_OFFSET;
 	while (y < MINIMAP_OFFSET + total_pixel_size)
 	{
@@ -69,16 +79,6 @@ static void	draw_minimap_player(mlx_image_t *img, int center_x, int center_y)
 	}
 }
 
-static uint32_t	get_tile_color(t_game *game, int map_x, int map_y)
-{
-	if (map_x < 0 || map_x >= game->map.width
-		|| map_y < 0 || map_y >= game->map.height)
-		return (MINIMAP_COLOR_EMPTY);
-	if (game->map.grid[map_y][map_x] == '1')
-		return (MINIMAP_COLOR_WALL);
-	return (MINIMAP_COLOR_EMPTY);
-}
-
 static void	draw_minimap_grid(t_game *game)
 {
 	int	i;
@@ -109,7 +109,7 @@ void	draw_minimap(t_game *game)
 
 	draw_minimap_grid(game);
 	draw_minimap_border(game->image, MINIMAP_RADIUS * 2 + 1);
-	center_x = get_screen_pos(0) + MINIMAP_TILE_SIZE / 2,
-	center_y = get_screen_pos(0) + MINIMAP_TILE_SIZE / 2,
+	center_x = get_screen_pos(0) + MINIMAP_TILE_SIZE / 2;
+	center_y = get_screen_pos(0) + MINIMAP_TILE_SIZE / 2;
 	draw_minimap_player(game->image, center_x, center_y);
 }

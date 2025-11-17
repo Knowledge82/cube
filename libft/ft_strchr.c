@@ -6,7 +6,7 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/03 13:08:29 by vdarsuye          #+#    #+#             */
-/*   Updated: 2024/07/13 19:57:18 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2025/11/17 17:21:56 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*ft_strchr(const char *s, int c)
 			return ((char *)s);
 		s++;
 	}
-	if (let == '\0') 
+	if (let == '\0')
 		return ((char *)s);
 	return (NULL);
 }

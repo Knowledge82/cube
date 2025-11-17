@@ -6,11 +6,29 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 13:18:06 by vdarsuye          #+#    #+#             */
-/*   Updated: 2025/11/12 13:18:08 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2025/11/16 19:47:48 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "cube.h"
+
+static int	is_door_blocking(t_game *game, int x, int y)
+{
+	int	i;
+
+	i = 0;
+	while (i < game->num_doors)
+	{
+		if (game->doors[i].x == x && game->doors[i].y == y)
+		{
+			if (game->doors[i].is_open == 0)
+				return (1);
+			return (0);
+		}
+		i++;
+	}
+	return (0);
+}
 
 int	can_move_to(t_game *game, double x, double y)
 {
@@ -24,6 +42,11 @@ int	can_move_to(t_game *game, double x, double y)
 		return (0);
 	if (game->map.grid[map_y][map_x] == '1')
 		return (0);
+	if (game->map.grid[map_y][map_x] == 'D')
+	{
+		if (is_door_blocking(game, map_x, map_y))
+			return (0);
+	}
 	return (1);
 }
 
@@ -82,25 +105,4 @@ void	handle_input(t_game *game)
 	handle_movement_w_s(game);
 	handle_movement_a_d(game);
 	handle_rotation(game);
-}
-
-void	clamp_player_position(t_game *game)
-{
-	double	min_x;
-	double	max_x;
-	double	min_y;
-	double	max_y;
-
-	min_x = 0.5;
-	max_x = (double)game->map.width - 0.5;
-	min_y = 0.5;
-	max_y = (double)game->map.height - 0.5;
-	if (game->player.pos_x < min_x)
-		game->player.pos_x = min_x;
-	if (game->player.pos_x > max_x)
-		game->player.pos_x = max_x;
-	if (game->player.pos_y < min_y)
-		game->player.pos_y = min_y;
-	if (game->player.pos_y > max_y)
-		game->player.pos_y = max_y;
 }

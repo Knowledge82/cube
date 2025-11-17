@@ -6,7 +6,7 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/12 13:18:23 by vdarsuye          #+#    #+#             */
-/*   Updated: 2025/11/12 13:18:25 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2025/11/17 16:51:38 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static int	parse_identifier(char *line, t_config *config)
 
 	id = get_identifier(line);
 	if (!id)
-		return (error_msg("Parse map config failed. Invalid identifier."), 0);
+		return (error_msg("Parse map config failed. Invalid identifier"), 0);
 	if (ft_strcmp(id, "F") == 0 || ft_strcmp(id, "C") == 0)
 		result = parse_color(line, config, id);
 	else
@@ -41,7 +41,7 @@ int	parse_config(char **file, int map_start, t_config *config)
 			continue ;
 		}
 		if (!parse_identifier(file[i], config))
-			return (error_msg("Parse map config failed"), 0);
+			return (0);
 		i++;
 	}
 	if (!validate_config(config))

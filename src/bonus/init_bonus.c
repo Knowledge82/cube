@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   init_bonus.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/11/15 12:06:48 by vdarsuye          #+#    #+#             */
+/*   Updated: 2025/11/16 18:07:40 by vdarsuye         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "cube.h"
 
 void	init_game_data(t_game *game)
@@ -34,10 +46,10 @@ int	init_game(const char *filename, t_game *game)
 	if (map_start == -1)
 		return (ft_free_array(file), error_msg("Map not found"), 0);
 	if (!parse_config(file, map_start, &game->config))
-		return (error_msg("Invalid map config"), ft_free_array(file),
+		return (ft_free_array(file),
 			free_config(&game->config), 0);
 	if (!parse_map(file, &game->map))
-		return (error_msg("Invalid map"), ft_free_array(file),
+		return (ft_free_array(file),
 			free_config(&game->config), 0);
 	if (!init_player(&game->player, &game->map))
 		return (0);
@@ -47,6 +59,9 @@ int	init_game(const char *filename, t_game *game)
 
 int	init_engine(t_game *game, int width, int height)
 {
+	game->z_buffer = malloc(sizeof(double) * WIDTH);
+	if (!game->z_buffer)
+		return (error_msg("Failed to allocate Z-buffer"), 0);
 	game->mlx = mlx_init(width, height, "cube3D", false);
 	if (!game->mlx)
 		return (error_msg("MLX init failed"), 0);
