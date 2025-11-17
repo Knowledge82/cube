@@ -6,7 +6,7 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 18:22:54 by vdarsuye          #+#    #+#             */
-/*   Updated: 2025/11/16 15:39:13 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2025/11/17 18:38:30 by vdarsuye         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,19 @@ int	copy_map_line(char **map_grid, int index,
 {
 	char	*clean_line;
 	size_t	clean_len;
+	size_t	i;
 
+	i = 0;
 	clean_line = ft_strtrim(src, "\n\r");
 	if (!clean_line)
 		return (0);
-	if (ft_strchr(clean_line, '\t'))
-		return (error_msg("Tab character in map. Use spaces."),
-			free(clean_line), 0);
+	while (clean_line[i])
+	{
+		if (clean_line[i] == '\t')
+			return (error_msg("Tab character in map. Use spaces."), free(clean_line),
+			 0);
+		i++;
+	}
 	map_grid[index] = ft_calloc(target_width + 1, sizeof(char));
 	if (!map_grid[index])
 		return (error_msg("Map memory allocation failed"), free(clean_line), 0);

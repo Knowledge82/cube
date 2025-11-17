@@ -6,7 +6,7 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/10 14:23:58 by vdarsuye          #+#    #+#             */
-/*   Updated: 2025/11/10 18:21:06 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2025/11/16 22:48:04 by pdoltu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,12 +45,12 @@ int	init_game(const char *filename, t_game *game)
 	map_start = find_map_start(file);
 	if (map_start == -1)
 		return (ft_free_array(file), error_msg("Map not found"), 0);
+	else if (map_start== -2)
+		return (ft_free_array(file), error_msg("Tab character in map. Use spaces."), 0);
 	if (!parse_config(file, map_start, &game->config))
-		return (error_msg("Invalid map config"), ft_free_array(file),
-			free_config(&game->config), 0);
+		return (ft_free_array(file), free_config(&game->config), 0);
 	if (!parse_map(file, &game->map))
-		return (error_msg("Invalid map"), ft_free_array(file),
-			free_config(&game->config), 0);
+		return (ft_free_array(file), free_config(&game->config), 0);
 	if (!init_player(&game->player, &game->map))
 		return (0);
 	ft_free_array(file);
