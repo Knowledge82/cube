@@ -6,7 +6,7 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 14:59:39 by vdarsuye          #+#    #+#             */
-/*   Updated: 2025/11/10 18:10:43 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2025/11/17 14:52:10 by pdoltu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,16 +69,10 @@ char	**read_file(const char *filename)
 
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
-	{
-		perror("Error\n");
 		return (NULL);
-	}
 	file = load_lines_array(fd);
 	close(fd);
 	if (!file)
-	{
-		perror("Error\n");
 		return (NULL);
-	}
 	return (file);
 }

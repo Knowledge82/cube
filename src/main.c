@@ -6,7 +6,7 @@
 /*   By: vdarsuye <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/10/08 12:47:55 by vdarsuye          #+#    #+#             */
-/*   Updated: 2025/11/10 19:31:06 by vdarsuye         ###   ########.fr       */
+/*   Updated: 2025/11/17 14:55:02 by pdoltu           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	main(int argc, char **argv)
 	t_game	game;
 
 	if (argc != 2)
-		return (error_msg("Usage: ./cube3D <map.cub>"), 1);
+		return (error_msg("Too many arguments! Use: ./cube3D <*.cub>"), 1);
 	if (!init_game(argv[1], &game))
 		return (1);
 	if (!init_engine(&game, WIDTH, HEIGHT))
