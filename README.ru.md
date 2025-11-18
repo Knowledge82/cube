@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&height=180&color=gradient&text= Pavel%20Doltu%20cub3D%20Project%20%7C%2042%20Barcelona&fontAlign=50&fontAlignY=40&fontSize=40&desc=Raycasting%20Engine%20in%20C&descAlignY=60&descAlign=50" />
+  <img src="https://capsule-render.vercel.app/api?type=waving&height=180&color=gradient&text=cub3D%20Project%20%7C%2042%20Barcelona&fontAlign=50&fontAlignY=40&fontSize=40&desc=Raycasting%20Engine%20in%20C&descAlignY=60&descAlign=50" />
 </p>
 
 # 🎮 cub3D — Raycasting Maze Game (School 42 Project)
